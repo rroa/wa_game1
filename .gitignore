@@ -27,3 +27,9 @@
 *.exe
 *.out
 *.app
+#
+*.sdf
+*.VC.db
+*.db
+.vs/
+x64/
