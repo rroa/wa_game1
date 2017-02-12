@@ -32,6 +32,7 @@
 *.sdf
 *.VC.db
 *.db
+*.opendb
 .vs/
 x64/
 x86/
