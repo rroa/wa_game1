@@ -25,6 +25,8 @@ namespace Asteroids
 			 * FUNCTIONS
 			 */
 			void MoveUp();
+			void MoveRight();
+			void MoveLeft();
 			void Draw();
 		private:
 			std::vector<Engine::Math::Vector2> m_points;

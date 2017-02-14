@@ -2,6 +2,8 @@
 // OPENGL
 #include <SDL2\SDL_opengl.h>
 
+#include <iostream>
+
 namespace Engine
 {
 	namespace Graphics
@@ -20,6 +22,12 @@ namespace Engine
 			// Translate
 			//
 			glTranslatef(m_position.GetX(), m_position.GetY(), 0.0f);
+
+			// Rotate
+			//
+			glRotatef(m_angle, 0.0f, 0.0f, 1.0f);
+
+			std::cout << m_angle << std::endl;
 
 			// Draw
 			//
