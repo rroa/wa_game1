@@ -181,6 +181,7 @@ namespace Engine
 
 		// Update code goes here
 		//
+		m_entities[m_currentIndex]->Update(DESIRED_FRAME_RATE);
 
 		double endTime = m_timer->GetElapsedTimeInSeconds();
 		double nextTimeFrame = startTime + DESIRED_FRAME_TIME;

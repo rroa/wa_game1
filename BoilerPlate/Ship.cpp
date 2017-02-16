@@ -28,11 +28,15 @@ namespace Asteroids
 		}
 
 		const float ANGLE_OFFSET = 90.0f;
+		const float THRUST = 3.0f;
+		const float MAX_SPEED = 350.0f;
+		const float DRAG = 0.999f;
 		const int WIDTH = 1136;
 		const int HEIGHT = 640;
 
 		Ship::Ship(const std::vector<Engine::Math::Vector2> points)
 			: m_points(points)
+			, m_mass(0.5f)
 		{
 			m_angle = 0.0f;
 			m_angleInRads = ANGLE_OFFSET * (Engine::Math::PI / 180);
@@ -40,13 +44,53 @@ namespace Asteroids
 
 		void Ship::MoveUp()
 		{
-			Engine::Math::Vector2 velocity(
-				10 * std::cosf(m_angleInRads), 
-				10 * std::sinf(m_angleInRads)
+			// Calculate impulse
+			//
+			if (m_mass > 0)
+			{				
+				float x = (THRUST / m_mass) * std::cosf(m_angleInRads);
+				float y = (THRUST / m_mass) * std::sinf(m_angleInRads);
+				m_velocity += Engine::Math::Vector2(x, y);
+			}
+		}
+
+		void Ship::MoveRight()
+		{
+			m_angle -= 5.0f;
+			m_angleInRads = (m_angle + ANGLE_OFFSET) * (Engine::Math::PI / 180);
+		}
+
+		void Ship::MoveLeft()
+		{
+			m_angle += 5.0f;
+			m_angleInRads = (m_angle + ANGLE_OFFSET) * (Engine::Math::PI / 180);
+		}
+
+		void Ship::Update(float delta)
+		{
+			// Clamp speed
+			//
+			float speed = std::fabs(m_velocity.Length());
+			if (speed > MAX_SPEED)
+			{
+				m_velocity = Engine::Math::Vector2(
+					(m_velocity.GetX() / speed) * MAX_SPEED,
+					(m_velocity.GetY() / speed) * MAX_SPEED
+					);
+			}
+
+			// Apply drag
+			//
+			m_velocity = Engine::Math::Vector2(
+				m_velocity.GetX() * DRAG,
+				m_velocity.GetY() * DRAG
 				);
-			
+
+
+			// New position
+			//
 			Engine::Math::Vector2 newPos =
-				m_position + velocity;
+				m_position + m_velocity;
 
 			float halfWidth = (WIDTH / 2.0f);
 			float halfHeight = (HEIGHT / 2.0f);
@@ -64,18 +108,6 @@ namespace Asteroids
 			newPos = Engine::Math::Vector2(x, y);
 
 			Entity::Translate(newPos);
-		}
-
-		void Ship::MoveRight()
-		{
-			m_angle -= 5.0f;
-			m_angleInRads = (m_angle + ANGLE_OFFSET) * (Engine::Math::PI / 180);
-		}
-
-		void Ship::MoveLeft()
-		{
-			m_angle += 5.0f;
-			m_angleInRads = (m_angle + ANGLE_OFFSET) * (Engine::Math::PI / 180);
 		}
 
 		void Ship::Draw()
