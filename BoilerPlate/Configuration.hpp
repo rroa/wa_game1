@@ -6,7 +6,7 @@
 #include <vector>
 
 //
-#include "Ship.hpp"
+#include "Vector2.hpp"
 
 namespace Asteroids
 {
@@ -15,7 +15,7 @@ namespace Asteroids
 		class Configuration
 		{
 		public:
-			std::vector<Entities::Ship*> LoadModels();
+			std::vector<std::vector<Engine::Math::Vector2>> LoadModels() const;
 		};
 	}
 }

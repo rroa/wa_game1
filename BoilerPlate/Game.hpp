@@ -21,13 +21,14 @@ namespace Asteroids
 		* PUBLIC FUNCTIONS
 		* ============================================================= */
 		void Init();
-		void Update(float delta);
+		void Update(float delta) const;
 		void Render() const;
 	private:
 		/* =============================================================
 		* PRIVATE FUNCTIONS
 		* ============================================================= */
-		void HandleInput();
+		void HandleInput() const;
+		void CreatePlayer();
 		void CreateAsteroids(int amount) const;
 
 		/* =============================================================
@@ -35,9 +36,8 @@ namespace Asteroids
 		* ============================================================= */
 		Entities::Scene* m_scene;
 		int m_width;
-		int m_height;
-		int	m_currentIndex;
-		Entities::Ship* m_currentShip;
+		int m_height;		
+		Entities::Ship* m_player;
 		std::vector<Entities::Ship*> m_ships;
 	};
 }

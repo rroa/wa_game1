@@ -19,8 +19,7 @@ namespace Asteroids
 		: m_scene(nullptr)
 		, m_width(width)
 		, m_height(height)
-		, m_currentIndex(0)
-		, m_currentShip(nullptr)
+		, m_player(nullptr)
 	{}
 
 	Game::~Game()
@@ -29,16 +28,6 @@ namespace Asteroids
 		//
 		delete m_scene;
 
-		// Delete models
-		//
-		for (auto entity : m_ships)
-		{
-			//
-			if (entity->id == m_currentShip->id) continue;
-			
-			delete entity;
-		}
-
 		// Clear list
 		//
 		m_ships.clear();
@@ -46,12 +35,6 @@ namespace Asteroids
 
 	void Game::Init()
 	{
-		// Loading models
-		//
-		Utilities::Configuration config;
-		m_ships = config.LoadModels();
-		m_currentShip = m_ships[m_currentIndex];
-
 		// Create the scene
 		//
 		m_scene = new Entities::Scene(
@@ -61,15 +44,15 @@ namespace Asteroids
 		);
 
 		// Adding the player (ship)
-		//		
-		m_scene->AddChild(m_currentShip);
+		//
+		CreatePlayer();
 		
 		// Adding the enemies (asteroids)
 		//
 		CreateAsteroids(10);
 	}
 
-	void Game::Update(float delta)
+	void Game::Update(float delta) const
 	{
 		// Handle Input
 		//
@@ -87,41 +70,41 @@ namespace Asteroids
 		m_scene->Render();
 	}
 
-	void Game::HandleInput()
+	void Game::HandleInput() const
 	{
 		if (Engine::Systems::InputSystem::Instance().IsKeyDown('w'))
 		{
-			m_ships[m_currentIndex]->MoveUp();
+			m_player->MoveUp();
 		}
 
 		if (Engine::Systems::InputSystem::Instance().IsKeyDown('a'))
 		{
-			m_ships[m_currentIndex]->MoveLeft();
+			m_player->MoveLeft();
 		}
 
 		if (Engine::Systems::InputSystem::Instance().IsKeyDown('d'))
 		{
-			m_ships[m_currentIndex]->MoveRight();
+			m_player->MoveRight();
 		}
 
 		if (Engine::Systems::InputSystem::Instance().IsKeyDown('p'))
 		{
-			m_currentIndex++;
-			if (m_currentIndex > (m_ships.size() - 1))
-			{
-				m_currentIndex = 0;
-			}
-
-			// Point to the new ship
-			//
-			/*m_scene->RemoveChild(m_currentShip);
-			m_currentShip = m_ships[m_currentIndex];
-			m_scene->AddChild(m_currentShip);*/
-
-			std::cout << "Current Id " << m_currentShip->id << std::endl;
-			std::cout << "Current Index " << m_currentIndex << std::endl;
+			m_player->ChangeShip();
 		}
 	}
+
+	void Game::CreatePlayer()
+	{
+		// Loading models
+		//
+		Utilities::Configuration config;
+		m_player = new Entities::Ship(config.LoadModels());
+
+		// Adding the player (ship)
+		//		
+		m_scene->AddChild(m_player);
+	}
+
 	void Game::CreateAsteroids(int amount) const
 	{
 		for (int i = 0; i < amount; ++i)
