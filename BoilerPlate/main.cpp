@@ -1,6 +1,6 @@
 #if _MSC_VER && _DEBUG
-	#define _CRTDBG_MAP_ALLOC
-	#include <crtdbg.h>
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
 #endif
 
 // C++ STL
@@ -10,6 +10,10 @@
 // 
 #include "App.hpp"
 #include "Utilities.hpp"
+#include "TransformationComponent.hpp"
+#include "RigidBodyComponent.hpp"
+#include "GameObject.hpp"
+#include "Scene.hpp"
 
 const int WIDTH = 1136;
 const int HEIGHT = 640;
@@ -26,23 +30,44 @@ int main(int argc, char* argv[])
 
 	// Create Game Object
 	//
-	Engine::App* app = new Engine::App("Boiler Plate!", WIDTH, HEIGHT);
+	//Engine::App* app = new Engine::App("Boiler Plate!", WIDTH, HEIGHT);
 
-	// Initialize game
-	//
-	if(!app->Init())
+	//// Initialize game
+	////
+	//if(!app->Init())
+	//{
+	//	std::cout << "App Init error!\n";
+	//	return -1;
+	//}
+
+	//// Execute game
+	////
+	//app->Execute();
+
+	//// Delete game object
+	////
+	//delete app;
+
+	Engine::Core::Scene* scene = new Engine::Core::Scene(Engine::Math::Vector3(1.0f, 1.0f, 1.0f));
+	Engine::Core::GameObject* go = new Engine::Core::GameObject();
+	Engine::Components::RigidBodyComponent* pc = new Engine::Components::RigidBodyComponent();
+	Engine::Components::TransformationComponent* tc = new Engine::Components::TransformationComponent();
+
+	scene->AddGameObject(go);
+	go->AttachComponent(pc);
+	go->AttachComponent(tc);
+
+	Engine::Components::RigidBodyComponent* rt = go->GetComponent<Engine::Components::RigidBodyComponent>();
+	assert(rt);
+	if (rt)
 	{
-		std::cout << "App Init error!\n";
-		return -1;
+		std::cout << rt->GetName() << std::endl;
+		std::cout << rt->GetMass() << std::endl;
 	}
 
-	// Execute game
-	//
-	app->Execute();
+	std::cin.get();
 
-	// Delete game object
-	//
-	delete app;
+	delete scene;
 
 	return 0;
 }

@@ -24,6 +24,24 @@
     <ClCompile Include="Drawable2D.cpp">
       <Filter>Engine\Source files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Engine\Source files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Engine\Source files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Engine\Source files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3.cpp">
+      <Filter>Engine\Source files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBodyComponent.cpp">
+      <Filter>Engine\Source files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformationComponent.cpp">
+      <Filter>Engine\Source files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.hpp" />
@@ -49,6 +67,30 @@
     </ClInclude>
     <ClInclude Include="Constants.hpp">
       <Filter>Engine\Header files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="IUpdate.hpp">
+      <Filter>Engine\Header files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="IRender.hpp">
+      <Filter>Engine\Header files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.hpp">
+      <Filter>Engine\Header files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.hpp">
+      <Filter>Engine\Header files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.hpp">
+      <Filter>Engine\Header files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.hpp">
+      <Filter>Engine\Header files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBodyComponent.hpp">
+      <Filter>Engine\Header files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformationComponent.hpp">
+      <Filter>Engine\Header files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +141,18 @@
     </Filter>
     <Filter Include="Engine\Source files\Graphics">
       <UniqueIdentifier>{b79d1e05-9436-4405-a590-36f0b1efec01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Header files\Core">
+      <UniqueIdentifier>{2caad7df-83c9-4be2-965b-082eac531b39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Source files\Core">
+      <UniqueIdentifier>{f18b50b2-2ddd-42b1-a8ea-a0589c47b437}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Header files\Components">
+      <UniqueIdentifier>{92c54c25-762f-4ea0-9907-a78935758952}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Source files\Components">
+      <UniqueIdentifier>{cad3b953-ef96-4a04-9e3b-28702d6a5891}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

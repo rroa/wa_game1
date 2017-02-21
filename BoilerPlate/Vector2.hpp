@@ -10,22 +10,23 @@ namespace Engine
 		class Vector2
 		{
 		public:
-			/*
-			 * CONST
-			 */
+			/* =============================================================
+			* CTOR
+			* ============================================================= */
 			Vector2( );
 			Vector2( float uniform );
 			Vector2( float x, float y );
 
-			/*
-			 * PUBLIC FUNCTIONS
-			 */
+			/* =============================================================
+			* PUBLIC FUNCTIONS
+			* ============================================================= */
 			float Length() const;
 			float SquaredLength() const;
+			float Vector2::Normalize();
 
-			/*
-			 * OPERATORS
-			 */
+			/* =============================================================
+			* OPERATORS
+			* ============================================================= */
 			Vector2& operator=( const Vector2& rhs );
 			Vector2& operator+=( const Vector2& rhs );
 			Vector2& operator-=( const Vector2& rhs );
@@ -41,9 +42,9 @@ namespace Engine
 			friend Vector2 operator*(float scaleUnit, const Vector2& rhs);
 			friend Vector2 operator*(const Vector2& lhs, float scaleUnit);
 
-			/*
-			* OPERATORS
-			*/
+			/* =============================================================
+			* MEMBERS
+			* ============================================================= */
 			float x;
 			float y;
 			float length;

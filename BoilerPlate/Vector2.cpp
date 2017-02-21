@@ -41,6 +41,18 @@ namespace Engine
 			return x * x + y * y;
 		}
 
+		float Vector2::Normalize()
+		{
+			// Calculating the length
+			Length();
+
+			float inverseScale = 1.0f / length;
+			x *= inverseScale;
+			y *= inverseScale;
+
+			return length;
+		}
+
 		// operators
 		//
 		Vector2& Vector2::operator=(const Vector2& rhs)
