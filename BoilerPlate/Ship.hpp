@@ -9,6 +9,8 @@
 #include "Vector2.hpp"
 #include "Entity.hpp"
 
+typedef std::vector<Engine::Math::Vector2> models;
+
 namespace Asteroids
 {
 	namespace Entities
@@ -19,7 +21,8 @@ namespace Asteroids
 			/* =============================================================
 			* CTOR
 			* ============================================================= */
-			Ship(const std::vector<Engine::Math::Vector2> points, float mass = 1.0f);
+			Ship(const std::vector<models> ships);
+			~Ship();
 
 			/* =============================================================
 			* PUBLIC FUNCTIONS
@@ -27,14 +30,17 @@ namespace Asteroids
 			void MoveUp() const;
 			void MoveRight() const;
 			void MoveLeft() const;
+			void ChangeShip();
 			void Update(float deltaTime) override;
 			void Render() override;
 		private:
+			void CalculateMass();
 			/* =============================================================
 			* MEMBERS
 			* ============================================================= */
-			std::vector<Engine::Math::Vector2> m_points;
+			std::vector<models> m_ships;
 			float m_currentSpeed;
+			int	m_currentIndex;
 		};
 	}
 }

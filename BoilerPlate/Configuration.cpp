@@ -9,6 +9,7 @@
 //
 #include "Utilities.hpp"
 #include "Vector2.hpp"
+#include "MathUtilities.hpp"
 
 namespace Asteroids
 {
@@ -16,7 +17,7 @@ namespace Asteroids
 	{
 		std::string const models_dir = "models";
 
-		std::vector<Entities::Ship*> Configuration::LoadModels()
+		std::vector<std::vector<Engine::Math::Vector2>> Configuration::LoadModels() const
 		{
 			Engine::FileSystem::Utilities util;
 
@@ -24,7 +25,7 @@ namespace Asteroids
 			//
 			auto models = util.ListFiles(models_dir);
 
-			std::vector<Entities::Ship*> ships;
+			std::vector<std::vector<Engine::Math::Vector2>> ships;
 
 			for (auto model : models)
 			{
@@ -57,7 +58,7 @@ namespace Asteroids
 
 				// Adding ship to array
 				//
-				ships.push_back(new Asteroids::Entities::Ship(points));
+				ships.push_back(points);
 			}
 
 			return ships;

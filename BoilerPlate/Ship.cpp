@@ -14,8 +14,9 @@ namespace Asteroids
 		const float MAX_SPEED = 350.0f;
 		const float ROTATION_SPEED = 5.0f;
 
-		Ship::Ship(const std::vector<Engine::Math::Vector2> points, float mass)
-			: m_points(points)
+		Ship::Ship(const std::vector<models> points)
+			: m_ships(points)
+			, m_currentIndex(0)
 		{
 			// Transforms
 			//
@@ -30,14 +31,37 @@ namespace Asteroids
 			m_physics = new Engine::Components::RigidBodyComponent(
 				Engine::Math::Vector2(0.0f),
 				m_transforms->GetPosition(),
-				mass,
+				1.0f,
 				0.999f
 			);
 			
 			// Attaching physics component
 			//
 			AttachComponent(m_physics);
+
+			// Trigger mass calculation
+			//
+			CalculateMass();
 		}
+
+		Ship::~Ship()
+		{
+			// Clear points allocation per model
+			//
+			for(auto model : m_ships)
+			{
+				model.clear();
+			}
+
+			// Clear ships collection
+			//
+			m_ships.clear();
+
+			// Destroying base
+			//
+			Entity::~Entity();
+		}
+
 
 		void Ship::MoveUp() const
 		{			
@@ -55,6 +79,17 @@ namespace Asteroids
 		void Ship::MoveLeft() const
 		{
 			m_transforms->RotateInDegrees(m_transforms->GetAngleInDegrees() + ROTATION_SPEED);
+		}
+
+		void Ship::ChangeShip()
+		{
+			m_currentIndex++;
+			if (m_currentIndex > (m_ships.size() - 1))
+			{
+				m_currentIndex = 0;
+			}
+
+			CalculateMass();
 		}
 
 		void Ship::Update(float deltaTime)
@@ -79,7 +114,14 @@ namespace Asteroids
 
 		void Ship::Render()
 		{
-			Entity::Render(GL_LINE_LOOP, m_points);
+			Entity::Render(GL_LINE_LOOP, m_ships[m_currentIndex]);
+		}
+
+		void Ship::CalculateMass()
+		{
+			// Set the mass, proportional to the ship size (asumming points defines size)
+			//
+			m_physics->SetMass(m_ships[m_currentIndex].size() / 10.0f);
 		}
 	}
 }
