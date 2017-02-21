@@ -115,6 +115,18 @@ namespace Asteroids
 			Entity::Translate(newPos);
 		}
 
+		void Ship::MoveRight()
+		{
+			m_angle -= 5.0f;
+			m_angleInRads = (m_angle + ANGLE_OFFSET) * (Engine::Math::PI / 180);
+		}
+
+		void Ship::MoveLeft()
+		{
+			m_angle += 5.0f;
+			m_angleInRads = (m_angle + ANGLE_OFFSET) * (Engine::Math::PI / 180);
+		}
+
 		void Ship::Draw()
 		{
 			Entity::Draw(GL_LINE_LOOP, m_points);
