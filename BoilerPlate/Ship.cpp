@@ -74,8 +74,8 @@ namespace Asteroids
 			if (speed > MAX_SPEED)
 			{
 				m_velocity = Engine::Math::Vector2(
-					(m_velocity.GetX() / speed) * MAX_SPEED,
-					(m_velocity.GetY() / speed) * MAX_SPEED
+					(m_velocity.x / speed) * MAX_SPEED,
+					(m_velocity.y / speed) * MAX_SPEED
 					);
 
 				speed = std::fabs(m_velocity.Length());
@@ -84,16 +84,16 @@ namespace Asteroids
 			// Apply drag
 			//
 			m_velocity = Engine::Math::Vector2(
-				m_velocity.GetX() * DRAG,
-				m_velocity.GetY() * DRAG
+				m_velocity.x * DRAG,
+				m_velocity.y * DRAG
 				);
 
 
 			// New position
 			//
 			Engine::Math::Vector2 newPos(
-				m_position.GetX() + (m_velocity.GetX() * delta),
-				m_position.GetY() + (m_velocity.GetY() * delta)
+				m_position.x + (m_velocity.x * delta),
+				m_position.y + (m_velocity.y * delta)
 			);
 				/*m_position + m_velocity;*/
 
@@ -107,24 +107,12 @@ namespace Asteroids
 			float worldMaxY = halfHeight;
 
 			// Wrap!
-			float x = wrap(newPos.GetX(), worldMinX, worldMaxX);
-			float y = wrap(newPos.GetY(), worldMinY, worldMaxY);
+			float x = wrap(newPos.x, worldMinX, worldMaxX);
+			float y = wrap(newPos.y, worldMinY, worldMaxY);
 
 			newPos = Engine::Math::Vector2(x, y);
 
 			Entity::Translate(newPos);
-		}
-
-		void Ship::MoveRight()
-		{
-			m_angle -= 5.0f;
-			m_angleInRads = (m_angle + ANGLE_OFFSET) * (Engine::Math::PI / 180);
-		}
-
-		void Ship::MoveLeft()
-		{
-			m_angle += 5.0f;
-			m_angleInRads = (m_angle + ANGLE_OFFSET) * (Engine::Math::PI / 180);
 		}
 
 		void Ship::Draw()

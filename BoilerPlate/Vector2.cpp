@@ -1,20 +1,20 @@
 #include "Vector2.hpp"
 #include <cmath>
-#include <string>
+
 namespace Engine
 {
 	namespace Math
 	{
 		Vector2::Vector2()
-			: m_x( 0.0f )
-			, m_y( 0.0f )
-			, m_length( 0.0f )
+			: x( 0.0f )
+			, y( 0.0f )
+			, length( 0.0f )
 		{}
 
 		Vector2::Vector2(float uniform)
-			: m_x(uniform)
-			, m_y(uniform)
-			, m_length( 0 )
+			: x(uniform)
+			, y(uniform)
+			, length( 0 )
 		{
 			// Calculate length for the given point
 			//
@@ -22,33 +22,23 @@ namespace Engine
 		}
 
 		Vector2::Vector2(float x, float y)
-			: m_x( x )
-			, m_y( y )
-			, m_length( 0 )
+			: x( x )
+			, y( y )
+			, length( 0 )
 		{
 			// Calculate length for the given point
 			//
 			Length();
 		}
 
-		const float Vector2::GetX()
+		float Vector2::Length() const
 		{
-			return m_x;
+			return std::sqrt(x * x + y * y);
 		}
 
-		const float Vector2::GetY()
+		float Vector2::SquaredLength() const
 		{
-			return m_y;
-		}
-
-		float Vector2::Length()
-		{
-			return std::sqrt(m_x * m_x + m_y * m_y);
-		}
-
-		float Vector2::SquaredLength()
-		{
-			return m_x * m_x + m_y * m_y;
+			return x * x + y * y;
 		}
 
 		// operators
@@ -62,108 +52,108 @@ namespace Engine
 				return *this;
 			}
 
-			m_x = rhs.m_x;
-			m_y = rhs.m_y;
+			x = rhs.x;
+			y = rhs.y;
 
 			return *this;
 		}
 
 		Vector2& Vector2::operator+=(const Vector2& rhs)
 		{
-			m_x = m_x + rhs.m_x;
-			m_y = m_y + rhs.m_y;
+			x = x + rhs.x;
+			y = y + rhs.y;
 
 			return *this;
 		}
 
 		Vector2& Vector2::operator-=(const Vector2& rhs)
 		{
-			m_x = m_x - rhs.m_x;
-			m_y = m_y - rhs.m_y;
+			x = x - rhs.x;
+			y = y - rhs.y;
 
 			return *this;
 		}
 
 		Vector2& Vector2::operator*=(const Vector2& rhs)
 		{
-			m_x = m_x * rhs.m_x;
-			m_y = m_y * rhs.m_y;
+			x = x * rhs.x;
+			y = y * rhs.y;
 
 			return *this;
 		}
 
 		Vector2& Vector2::operator/=(const Vector2& rhs)
 		{
-			m_x = m_x / rhs.m_x;
-			m_y = m_y / rhs.m_y;
+			x = x / rhs.x;
+			y = y / rhs.y;
 
 			return *this;
 		}
 
-		Vector2 Vector2::operator+(const Vector2& rhs)
+		Vector2 Vector2::operator+(const Vector2& rhs) const
 		{
 			Vector2 sum;
 
-			sum.m_x = m_x + rhs.m_x;
-			sum.m_y = m_y + rhs.m_y;
+			sum.x = x + rhs.x;
+			sum.y = y + rhs.y;
 
 			return sum;
 		}
 
-		Vector2 Vector2::operator-(const Vector2& rhs)
+		Vector2 Vector2::operator-(const Vector2& rhs) const
 		{
 			Vector2 sub;
-			sub.m_x = m_x - rhs.m_x;
-			sub.m_y = m_y - rhs.m_y;
+			sub.x = x - rhs.x;
+			sub.y = y - rhs.y;
 
 			return sub;
 		}
 
-		Vector2 Vector2::operator-()
+		Vector2 Vector2::operator-() const
 		{
-			return Vector2(-m_x, -m_y);
+			return Vector2(-x, -y);
 		}
 
-		Vector2 Vector2::operator*(const Vector2& rhs)
+		Vector2 Vector2::operator*(const Vector2& rhs) const
 		{
 			Vector2 scaled;
 
-			scaled.m_y = m_y * rhs.m_y;
-			scaled.m_x = m_x * rhs.m_x;
+			scaled.y = y * rhs.y;
+			scaled.x = x * rhs.x;
 
 			return scaled;
 		}
 
-		Vector2 Vector2::operator/(const Vector2& rhs)
+		Vector2 Vector2::operator/(const Vector2& rhs) const
 		{
 			Vector2 inverseScaled;
 
-			inverseScaled.m_x = m_x / rhs.m_x;
-			inverseScaled.m_y = m_y / rhs.m_y;
+			inverseScaled.x = x / rhs.x;
+			inverseScaled.y = y / rhs.y;
 
 			return inverseScaled;
 		}
 
-		bool Vector2::operator==(const Vector2& rhs)
+		bool Vector2::operator==(const Vector2& rhs) const
 		{
 			return
-				m_x == rhs.m_x &&
-				m_y == rhs.m_y;
+				x == rhs.x &&
+				y == rhs.y;
 		}
 
-		bool Vector2::operator!=(const Vector2& rhs)
+		bool Vector2::operator!=(const Vector2& rhs) const
 		{
 			return
-				m_x != rhs.m_x ||
-				m_y != rhs.m_y;
+				x != rhs.x ||
+				y != rhs.y;
 		}
 
 		// friend functions
 		Vector2 operator*(float scaleUnit, const Vector2& rhs)
 		{
 			Vector2 scaled;
-			scaled.m_x = scaleUnit * rhs.m_x;
-			scaled.m_y = scaleUnit * rhs.m_y;
+			scaled.x = scaleUnit * rhs.x;
+			scaled.y = scaleUnit * rhs.y;
 
 			return scaled;
 		}
@@ -171,8 +161,8 @@ namespace Engine
 		Vector2 operator*(const Vector2& lhs, float scaleUnit)
 		{
 			Vector2 scaled;
-			scaled.m_x = scaleUnit * lhs.m_x;
-			scaled.m_y = scaleUnit * lhs.m_y;
+			scaled.x = scaleUnit * lhs.x;
+			scaled.y = scaleUnit * lhs.y;
 
 			return scaled;
 		}
