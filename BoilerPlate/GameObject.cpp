@@ -43,6 +43,10 @@ namespace Engine
 
 		void GameObject::AddChild(GameObject* child)
 		{
+			// Set the child parent
+			child->m_parent = this;
+
+			// 
 			m_children.push_back(child);
 		}
 

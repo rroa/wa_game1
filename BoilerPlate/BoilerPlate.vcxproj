@@ -178,9 +178,11 @@ XCOPY "$(SolutionDir)\BoilerPlate\models" "$(TargetDir)\models" /i /s /Y</Comman
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="Drawable2D.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RigidBodyComponent.cpp" />
+    <ClCompile Include="old.Scene.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SDLEvent.cpp" />
     <ClCompile Include="Ship.cpp" />
@@ -199,10 +201,12 @@ XCOPY "$(SolutionDir)\BoilerPlate\models" "$(TargetDir)\models" /i /s /Y</Comman
     <ClInclude Include="Drawable2D.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Constants.hpp" />
+    <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="IRender.hpp" />
     <ClInclude Include="IUpdate.hpp" />
     <ClInclude Include="RigidBodyComponent.hpp" />
+    <ClInclude Include="old.Scene.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="SDLEvent.hpp" />
     <ClInclude Include="Ship.hpp" />

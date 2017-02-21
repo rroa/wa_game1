@@ -38,7 +38,7 @@ namespace Asteroids
 			: m_points(points)
 			, m_mass(0.5f)
 		{
-			m_angle = 0.0f;
+			//m_angle = 0.0f;
 			m_angleInRads = ANGLE_OFFSET * (Engine::Math::PI / 180);
 		}
 
@@ -56,68 +56,68 @@ namespace Asteroids
 
 		void Ship::MoveRight()
 		{
-			m_angle -= 5.0f;
-			m_angleInRads = (m_angle + ANGLE_OFFSET) * (Engine::Math::PI / 180);
+			/*m_angle -= 5.0f;
+			m_angleInRads = (m_angle + ANGLE_OFFSET) * (Engine::Math::PI / 180);*/
 		}
 
 		void Ship::MoveLeft()
 		{
-			m_angle += 5.0f;
-			m_angleInRads = (m_angle + ANGLE_OFFSET) * (Engine::Math::PI / 180);
+			/*m_angle += 5.0f;
+			m_angleInRads = (m_angle + ANGLE_OFFSET) * (Engine::Math::PI / 180);*/
 		}
 
 		void Ship::Update(float delta)
 		{
-			// Clamp speed
-			//
-			float speed = std::fabs(m_velocity.Length());
-			if (speed > MAX_SPEED)
-			{
-				m_velocity = Engine::Math::Vector2(
-					(m_velocity.x / speed) * MAX_SPEED,
-					(m_velocity.y / speed) * MAX_SPEED
-					);
+			//// Clamp speed
+			////
+			//float speed = std::fabs(m_velocity.Length());
+			//if (speed > MAX_SPEED)
+			//{
+			//	m_velocity = Engine::Math::Vector2(
+			//		(m_velocity.x / speed) * MAX_SPEED,
+			//		(m_velocity.y / speed) * MAX_SPEED
+			//		);
 
-				speed = std::fabs(m_velocity.Length());
-			}
+			//	speed = std::fabs(m_velocity.Length());
+			//}
 
-			// Apply drag
-			//
-			m_velocity = Engine::Math::Vector2(
-				m_velocity.x * DRAG,
-				m_velocity.y * DRAG
-				);
+			//// Apply drag
+			////
+			//m_velocity = Engine::Math::Vector2(
+			//	m_velocity.x * DRAG,
+			//	m_velocity.y * DRAG
+			//	);
 
 
-			// New position
-			//
-			Engine::Math::Vector2 newPos(
-				m_position.x + (m_velocity.x * delta),
-				m_position.y + (m_velocity.y * delta)
-			);
-				/*m_position + m_velocity;*/
+			//// New position
+			////
+			//Engine::Math::Vector2 newPos(
+			//	m_position.x + (m_velocity.x * delta),
+			//	m_position.y + (m_velocity.y * delta)
+			//);
+			//	/*m_position + m_velocity;*/
 
-			float halfWidth = (WIDTH / 2.0f);
-			float halfHeight = (HEIGHT / 2.0f);
+			//float halfWidth = (WIDTH / 2.0f);
+			//float halfHeight = (HEIGHT / 2.0f);
 
-			float worldMinX = -halfWidth;
-			float worldMaxX = halfWidth;
+			//float worldMinX = -halfWidth;
+			//float worldMaxX = halfWidth;
 
-			float worldMinY = -halfHeight;
-			float worldMaxY = halfHeight;
+			//float worldMinY = -halfHeight;
+			//float worldMaxY = halfHeight;
 
-			// Wrap!
-			float x = wrap(newPos.x, worldMinX, worldMaxX);
-			float y = wrap(newPos.y, worldMinY, worldMaxY);
+			//// Wrap!
+			//float x = wrap(newPos.x, worldMinX, worldMaxX);
+			//float y = wrap(newPos.y, worldMinY, worldMaxY);
 
-			newPos = Engine::Math::Vector2(x, y);
+			//newPos = Engine::Math::Vector2(x, y);
 
-			Entity::Translate(newPos);
+			//Entity::Translate(newPos);
 		}
 
-		void Ship::Draw()
+		void Ship::Render()
 		{
-			Entity::Draw(GL_LINE_LOOP, m_points);
+			Entity::Render(GL_LINE_LOOP, m_points);
 		}
 	}
 }

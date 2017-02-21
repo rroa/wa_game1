@@ -30,9 +30,6 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Engine\Source files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Engine\Source files\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Vector3.cpp">
       <Filter>Engine\Source files\Math</Filter>
     </ClCompile>
@@ -44,6 +41,15 @@
     </ClCompile>
     <ClCompile Include="UniqueID.cpp">
       <Filter>Engine\Source files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Game\Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="old.Scene.cpp">
+      <Filter>Engine\Source files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Game\Source files\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,9 +89,6 @@
     <ClInclude Include="GameObject.hpp">
       <Filter>Engine\Header files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.hpp">
-      <Filter>Engine\Header files\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Vector3.hpp">
       <Filter>Engine\Header files\Math</Filter>
     </ClInclude>
@@ -97,6 +100,15 @@
     </ClInclude>
     <ClInclude Include="UniqueID.hpp">
       <Filter>Engine\Header files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.hpp">
+      <Filter>Game\Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="old.Scene.hpp">
+      <Filter>Engine\Header files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.hpp">
+      <Filter>Game\Header files\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
