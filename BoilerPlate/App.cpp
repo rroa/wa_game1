@@ -14,17 +14,20 @@ namespace Engine
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
 
 	App::App(const std::string& title, const int width, const int height)
-		: m_title(title)
-		  , m_width(width)
-		  , m_height(height)
-		  , m_nUpdates(0)
-		  , m_timer(new TimeManager)
-		  , m_mainWindow(nullptr)
-		  , m_context(nullptr)
-		  , m_game(nullptr)
+		: m_width(width)
+		, m_height(height)
+		, m_nUpdates(0)
+		, m_title(title)
+		, m_mainWindow(nullptr)
+		, m_context(nullptr)
+		, m_timer(new TimeManager)
+		, m_game(nullptr)
 	{
 		m_state = AppState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
+
+		// Creating the game object.
+		//
 		m_game = new Asteroids::Game(width, height);
 	}
 
