@@ -174,9 +174,9 @@ XCOPY "$(SolutionDir)\BoilerPlate\models" "$(TargetDir)\models" /i /s /Y</Comman
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Configuration.cpp" />
-    <ClCompile Include="Drawable2D.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -185,7 +185,6 @@ XCOPY "$(SolutionDir)\BoilerPlate\models" "$(TargetDir)\models" /i /s /Y</Comman
     <ClCompile Include="MathUtilities.cpp" />
     <ClCompile Include="Matrix2.cpp" />
     <ClCompile Include="RigidBodyComponent.cpp" />
-    <ClCompile Include="old.Scene.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SDLEvent.cpp" />
     <ClCompile Include="Ship.cpp" />
@@ -199,9 +198,9 @@ XCOPY "$(SolutionDir)\BoilerPlate\models" "$(TargetDir)\models" /i /s /Y</Comman
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.hpp" />
+    <ClInclude Include="Asteroid.hpp" />
     <ClInclude Include="Component.hpp" />
     <ClInclude Include="Configuration.hpp" />
-    <ClInclude Include="Drawable2D.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="Game.hpp" />
@@ -212,7 +211,6 @@ XCOPY "$(SolutionDir)\BoilerPlate\models" "$(TargetDir)\models" /i /s /Y</Comman
     <ClInclude Include="MathUtilities.hpp" />
     <ClInclude Include="Matrix2.hpp" />
     <ClInclude Include="RigidBodyComponent.hpp" />
-    <ClInclude Include="old.Scene.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="SDLEvent.hpp" />
     <ClInclude Include="Ship.hpp" />

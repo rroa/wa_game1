@@ -21,9 +21,6 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Game\Source files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Drawable2D.cpp">
-      <Filter>Engine\Source files\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Engine\Source files\Core</Filter>
     </ClCompile>
@@ -45,9 +42,6 @@
     <ClCompile Include="Game.cpp">
       <Filter>Game\Source files</Filter>
     </ClCompile>
-    <ClCompile Include="old.Scene.cpp">
-      <Filter>Engine\Source files\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Game\Source files\Entities</Filter>
     </ClCompile>
@@ -59,6 +53,9 @@
     </ClCompile>
     <ClCompile Include="MathUtilities.cpp">
       <Filter>Engine\Source files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Asteroid.cpp">
+      <Filter>Game\Source files\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -79,9 +76,6 @@
     </ClInclude>
     <ClInclude Include="Entity.hpp">
       <Filter>Game\Header files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Drawable2D.hpp">
-      <Filter>Engine\Header files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Constants.hpp">
       <Filter>Engine\Header files\Math</Filter>
@@ -113,9 +107,6 @@
     <ClInclude Include="Game.hpp">
       <Filter>Game\Header files</Filter>
     </ClInclude>
-    <ClInclude Include="old.Scene.hpp">
-      <Filter>Engine\Header files\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Scene.hpp">
       <Filter>Game\Header files\Entities</Filter>
     </ClInclude>
@@ -127,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="MathUtilities.hpp">
       <Filter>Engine\Header files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Asteroid.hpp">
+      <Filter>Game\Header files\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -8,8 +8,6 @@
 //
 #include "Vector2.hpp"
 #include "Entity.hpp"
-#include "TransformationComponent.hpp"
-#include "RigidBodyComponent.hpp"
 
 namespace Asteroids
 {
@@ -32,9 +30,10 @@ namespace Asteroids
 			void Update(float deltaTime) override;
 			void Render() override;
 		private:
+			/* =============================================================
+			* MEMBERS
+			* ============================================================= */
 			std::vector<Engine::Math::Vector2> m_points;
-			Engine::Components::TransformationComponent* m_transforms;
-			Engine::Components::RigidBodyComponent* m_physics;
 			float m_currentSpeed;
 		};
 	}

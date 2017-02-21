@@ -2,14 +2,8 @@
 #ifndef _APP_H_
 #define _APP_H_
 
-// C++ STL
-#include <list>
-#include <vector>
-
-
 #include "SDLEvent.hpp"
 #include "TimeManager.hpp"
-#include "Ship.hpp"
 #include "Game.hpp"
 
 namespace Engine
@@ -67,11 +61,11 @@ namespace Engine
 		SDL_Window*							m_mainWindow;
 		SDL_GLContext						m_context;
 		AppState::State						m_state;
-		Engine::TimeManager*				m_timer;
+		TimeManager*						m_timer;
 
 
 		//
-		Asteroids::Game* m_game;
+		Asteroids::Game*					m_game;
 	};
 }
 #endif /* _APP_H_ */
