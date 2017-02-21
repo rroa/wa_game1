@@ -8,6 +8,7 @@
 //
 #include "IUpdate.hpp"
 #include "IRender.hpp"
+#include "UniqueID.hpp"
 
 namespace Engine
 {
@@ -15,7 +16,7 @@ namespace Engine
 	{
 		class Component;
 		class Scene;
-		class GameObject : public IUpdate, public IRender
+		class GameObject : public IUpdate, public IRender, public UniqueID
 		{
 		public:
 			/* =============================================================

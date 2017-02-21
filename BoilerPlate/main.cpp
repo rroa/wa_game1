@@ -49,20 +49,23 @@ int main(int argc, char* argv[])
 	//delete app;
 
 	Engine::Core::Scene* scene = new Engine::Core::Scene(Engine::Math::Vector3(1.0f, 1.0f, 1.0f));
-	Engine::Core::GameObject* go = new Engine::Core::GameObject();
+	Engine::Core::GameObject* go1 = new Engine::Core::GameObject();
+	Engine::Core::GameObject* go2 = new Engine::Core::GameObject();
 	Engine::Components::RigidBodyComponent* pc = new Engine::Components::RigidBodyComponent();
 	Engine::Components::TransformationComponent* tc = new Engine::Components::TransformationComponent();
 
-	scene->AddGameObject(go);
-	go->AttachComponent(pc);
-	go->AttachComponent(tc);
+	scene->AddGameObject(go1);
+	go1->AttachComponent(pc);
+	go1->AttachComponent(tc);
 
-	Engine::Components::RigidBodyComponent* rt = go->GetComponent<Engine::Components::RigidBodyComponent>();
+	Engine::Components::RigidBodyComponent* rt = go1->GetComponent<Engine::Components::RigidBodyComponent>();
 	assert(rt);
 	if (rt)
 	{
 		std::cout << rt->GetName() << std::endl;
 		std::cout << rt->GetMass() << std::endl;
+		std::cout << go1->id << std::endl;
+		std::cout << go2->id << std::endl;
 	}
 
 	std::cin.get();

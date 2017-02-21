@@ -42,6 +42,9 @@
     <ClCompile Include="TransformationComponent.cpp">
       <Filter>Engine\Source files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="UniqueID.cpp">
+      <Filter>Engine\Source files\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.hpp" />
@@ -91,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="TransformationComponent.hpp">
       <Filter>Engine\Header files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="UniqueID.hpp">
+      <Filter>Engine\Header files\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
