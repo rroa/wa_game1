@@ -25,9 +25,11 @@ namespace Asteroids
 			/* =============================================================
 			* PUBLIC FUNCTIONS
 			* ============================================================= */
+			void Update(float delta) override;
 			void Render(unsigned int mode, std::vector<Engine::Math::Vector2> points);
-		protected:
-			float m_angleInRads;
+		private:
+			float m_halfWidth;
+			float m_halfHeight;
 		};
 	}
 }

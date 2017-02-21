@@ -1,5 +1,12 @@
 #include "Game.hpp"
 #include "Configuration.hpp"
+#include "InputSystem.hpp"
+#include <iostream>
+
+namespace Engine {namespace Systems {
+	class InputSystem;
+}
+}
 
 namespace Asteroids
 {
@@ -20,7 +27,9 @@ namespace Asteroids
 		//
 		for (auto entity : m_ships)
 		{
-			if(entity != nullptr) delete entity;
+			// TODO: RR: Let this leak, for now
+			// TODO: RR: Make the destructor for the GO's add a nullptr value to allocs
+			//if(entity != nullptr) delete entity;
 		}
 
 		// Clear list
@@ -32,7 +41,7 @@ namespace Asteroids
 	{
 		// Loading models
 		//
-		Asteroids::Utilities::Configuration config;
+		Utilities::Configuration config;
 		m_ships = config.LoadModels();
 
 		/*m_currentIndex++;
@@ -53,14 +62,40 @@ namespace Asteroids
 		m_scene->AddChild(m_ships[m_currentIndex]);
 	}
 
-	void Game::Update(float delta) const
+	void Game::Update(float delta)
 	{
+		// Handle Input
+		//
+		HandleInput();
+
+		// Update the scene
+		//
 		m_scene->Update(delta);
 	}
 
 	void Game::Render() const
 	{
+		// Render the game
+		//
 		m_scene->Render();
 	}
 
+	void Game::HandleInput()
+	{
+		if (Engine::Systems::InputSystem::Instance().IsKeyDown('w'))
+		{
+			m_ships[m_currentIndex]->MoveUp();
+		}
+
+		if (Engine::Systems::InputSystem::Instance().IsKeyDown('a'))
+		{
+			m_ships[m_currentIndex]->MoveLeft();
+		}
+
+		if (Engine::Systems::InputSystem::Instance().IsKeyDown('d'))
+		{
+			m_ships[m_currentIndex]->MoveRight();
+		}
+
+	}
 }

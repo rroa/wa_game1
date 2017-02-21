@@ -1,29 +1,92 @@
 #include "Entity.hpp"
 
 #include <SDL2/SDL_opengl.h>
+#include "Scene.hpp"
+#include "RigidBodyComponent.hpp"
+#include "TransformationComponent.hpp"
 
 namespace Asteroids
 {
 	namespace Entities
 	{
-		Entity::Entity()
-			: m_angleInRads(0)
+		inline float wrap(float axis, float min, float max)
 		{
+			if (axis < min)
+			{
+				return max - (min - axis);
+			}
+
+			if (axis > max)
+			{
+				return min + (axis - max);
+			}
+
+			return axis;
+		}
+
+		Entity::Entity()
+			: m_halfWidth(0)
+			, m_halfHeight(0)
+		{}
+
+		void Entity::Update(float deltaTime)
+		{
+			if (!GetParent()) return;
+
+			Scene* scene = dynamic_cast<Scene*>(GetParent());
+			if (!scene) return;
+
+			m_halfWidth = (scene->GetWidth() / 2.0f);
+			m_halfHeight = (scene->GetHeight() / 2.0f);
+
+			Engine::Components::RigidBodyComponent* physics = GetComponent<Engine::Components::RigidBodyComponent>();
+			Engine::Components::TransformationComponent* transforms = GetComponent<Engine::Components::TransformationComponent>();
+
+			if (!physics || !transforms) return;
+
+			// Time stepping the position
+			//
+			Engine::Math::Vector2 newPos(
+				transforms->GetPosition().x + (physics->GetVelocity().x * deltaTime),
+				transforms->GetPosition().y + (physics->GetVelocity().y * deltaTime)
+			);
+
+			// Getting axis limits
+			//
+			float worldMinX = -m_halfWidth;
+			float worldMaxX = m_halfWidth;
+
+			float worldMinY = -m_halfHeight;
+			float worldMaxY = m_halfHeight;
+
+			// Wrap!
+			float x = wrap(newPos.x, worldMinX, worldMaxX);
+			float y = wrap(newPos.y, worldMinY, worldMaxY);
+
+			// Set the new position
+			transforms->Teleport(x, y);
+
+			// Base update
+			//
+			GameObject::Update(deltaTime);
 		}
 
 		void Entity::Render(unsigned int mode, std::vector<Engine::Math::Vector2> points)
 		{
+			Engine::Components::TransformationComponent* transforms = GetComponent<Engine::Components::TransformationComponent>();
+			if (!transforms) return;
+
 			// Reset transformation matrix to identity
 			//
 			glLoadIdentity();
 
 			// Translate
 			//
-			//glTranslatef(m_position.x, m_position.y, 0.0f);
+			glTranslatef(transforms->GetPosition().x, transforms->GetPosition().y, 0.0f);
 
 			// Rotate
 			//
-			//glRotatef(m_angle, 0.0f, 0.0f, 1.0f);
+			glRotatef(transforms->GetAngleInDegrees(), 0.0f, 0.0f, 1.0f);
 
 			// Draw
 			//

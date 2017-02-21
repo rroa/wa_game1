@@ -41,7 +41,7 @@ namespace Engine
 		void Execute						( );
 		bool Init							( );
 		void Update							( );
-		void Render							( );
+		void Render							( ) const;
 	private:
 		/* =============================================================
 		 * PRIVATE FUNCTIONS

@@ -8,6 +8,8 @@
 //
 #include "Vector2.hpp"
 #include "Entity.hpp"
+#include "TransformationComponent.hpp"
+#include "RigidBodyComponent.hpp"
 
 namespace Asteroids
 {
@@ -16,23 +18,24 @@ namespace Asteroids
 		class Ship : public Entity
 		{
 		public:
-			/*
-			 * CONS
-			 */
-			Ship(const std::vector<Engine::Math::Vector2> points);
+			/* =============================================================
+			* CTOR
+			* ============================================================= */
+			Ship(const std::vector<Engine::Math::Vector2> points, float mass = 1.0f);
 
-			/*
-			 * FUNCTIONS
-			 */
-			void MoveUp();
-			void MoveRight();
-			void MoveLeft();
-			void Update(float delta);
-			void Render();
+			/* =============================================================
+			* PUBLIC FUNCTIONS
+			* ============================================================= */
+			void MoveUp() const;
+			void MoveRight() const;
+			void MoveLeft() const;
+			void Update(float deltaTime) override;
+			void Render() override;
 		private:
 			std::vector<Engine::Math::Vector2> m_points;
-			Engine::Math::Vector2 m_velocity;
-			float m_mass;
+			Engine::Components::TransformationComponent* m_transforms;
+			Engine::Components::RigidBodyComponent* m_physics;
+			float m_currentSpeed;
 		};
 	}
 }

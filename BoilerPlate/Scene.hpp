@@ -22,6 +22,12 @@ namespace Asteroids
 			* PUBLIC FUNCTIONS
 			* ============================================================= */
 			void Render() override;
+
+			/* =============================================================
+			* GETTER FUNCTIONS
+			* ============================================================= */
+			int GetWidth() const { return m_width; }
+			int GetHeight() const { return m_height; }
 		private:
 			/* =============================================================
 			* MEMBERS

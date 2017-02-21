@@ -1,17 +1,12 @@
 #include "App.hpp"
 
-#include <algorithm>
-
 // OpenGL includes
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
 
 //
-#include <fstream>
-
-//
-#include "Configuration.hpp"
 #include <iostream>
+#include "InputSystem.hpp"
 
 namespace Engine
 {
@@ -35,12 +30,15 @@ namespace Engine
 
 	App::~App()
 	{
+		// Delete the game
+		//
 		delete m_game;
 
 		// Timer
 		m_timer->Stop();
 		delete m_timer;
 
+		//
 		CleanupSDL();
 	}
 
@@ -97,52 +95,19 @@ namespace Engine
 	}
 
 	void App::OnKeyDown(SDL_KeyboardEvent keyBoardEvent)
-	{		
-
-		/* 
-		 * W (UP)
-		 * A (LEFT)
-		 * S (DOWN)
-		 * D (RIGHT)
-		 */
-
-		switch (keyBoardEvent.keysym.scancode)
-		{
-		case SDL_SCANCODE_W:
-			//m_entities[m_currentIndex]->MoveUp();
-			break;
-		case SDL_SCANCODE_A:
-			//m_entities[m_currentIndex]->MoveLeft();
-			break;
-		case SDL_SCANCODE_S:
-			break;
-		case SDL_SCANCODE_D:
-			//m_entities[m_currentIndex]->MoveRight();
-			break;
-		default:
-			SDL_Log("Physical %s key acting as %s key",
-				SDL_GetScancodeName(keyBoardEvent.keysym.scancode),
-				SDL_GetKeyName(keyBoardEvent.keysym.sym));
-			break;
-		}
+	{
+		OnKeyboardDownEvent(keyBoardEvent.keysym.sym);
 	}
 
 	void App::OnKeyUp(SDL_KeyboardEvent keyBoardEvent)
 	{
 		switch (keyBoardEvent.keysym.scancode)
 		{
-		case SDL_SCANCODE_P:
-			/*m_currentIndex++;
-			if (m_currentIndex > (m_entities.size() - 1))
-			{
-				m_currentIndex = 0;
-			}*/
-			break;
 		case SDL_SCANCODE_ESCAPE:
 			OnExit();
 			break;
 		default:
-			//DO NOTHING
+			OnKeyboardUpEvent(keyBoardEvent.keysym.sym);
 			break;
 		}
 	}
@@ -151,9 +116,8 @@ namespace Engine
 	{
 		double startTime = m_timer->GetElapsedTimeInSeconds();
 
-		// Update code goes here
+		// Update the game!
 		//
-		//m_entities[m_currentIndex]->Update(DESIRED_FRAME_TIME);
 		m_game->Update(DESIRED_FRAME_TIME);
 
 		double endTime = m_timer->GetElapsedTimeInSeconds();
@@ -172,13 +136,10 @@ namespace Engine
 		m_nUpdates++;
 	}
 
-	void App::Render()
+	void App::Render() const
 	{
-		//glClearColor(0.1f, 0.1f, 0.15f, 1.0f);
-		//glClear(GL_COLOR_BUFFER_BIT);
-
-		////
-		//m_entities[m_currentIndex]->Draw();
+		// Render the game's current frame
+		//
 		m_game->Render();
 
 		SDL_GL_SwapWindow(m_mainWindow);

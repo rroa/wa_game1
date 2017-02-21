@@ -23,7 +23,13 @@ namespace Engine
 			* PUBLIC FUNCTIONS
 			* ============================================================= */
 			void Update(float deltaTime) override;
-			void AddForce(Math::Vector2 force);
+			void ApplyForce(const Math::Vector2 force, float angleInRadians = 1.0f);
+
+			/* =============================================================
+			* SETTER FUNCTIONS
+			* ============================================================= */
+			void SetMass(float mass) { m_mass = mass; }
+			void SetVelocity(Math::Vector2 velocity) { m_velocity = velocity; }
 
 			/* =============================================================
 			* GETTER FUNCTIONS
