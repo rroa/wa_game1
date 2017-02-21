@@ -3,7 +3,6 @@
 #define APP_HPP
 
 // C++ STL
-#include <string>
 #include <list>
 #include <vector>
 
@@ -47,9 +46,9 @@ namespace Engine
 		 * PRIVATE FUNCTIONS
 		 * ============================================================= */
 		bool SDLInit						( );
-		bool GlewInit						( );
-		void SetupViewport					( );
-		void CleanupSDL						( );
+		static bool GlewInit						( );
+		void SetupViewport					( ) const;
+		void CleanupSDL						( ) const;
 		void OnResize						( int width, int height ) override;
 		void OnExit							( ) override;
 		void OnKeyDown						( SDL_KeyboardEvent keyBoardEvent ) override;

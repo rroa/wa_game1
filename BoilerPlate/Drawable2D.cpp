@@ -27,8 +27,6 @@ namespace Engine
 			//
 			glRotatef(m_angle, 0.0f, 0.0f, 1.0f);
 
-			std::cout << m_angle << std::endl;
-
 			// Draw
 			//
 			glBegin(mode);

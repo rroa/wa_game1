@@ -4,8 +4,6 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-/* MOVE OUT ! */
-#include <iostream>
 
 // Engine
 //
@@ -56,10 +54,6 @@ namespace Asteroids
 						Engine::Math::Vector2(components[0], components[1])
 						);					
 				}
-
-				std::cout << "For model: " << model 
-						  << " we read " << points.size() << " points"
-					      << std::endl;
 
 				// Adding ship to array
 				//

@@ -77,6 +77,8 @@ namespace Asteroids
 					(m_velocity.GetX() / speed) * MAX_SPEED,
 					(m_velocity.GetY() / speed) * MAX_SPEED
 					);
+
+				speed = std::fabs(m_velocity.Length());
 			}
 
 			// Apply drag
@@ -89,8 +91,11 @@ namespace Asteroids
 
 			// New position
 			//
-			Engine::Math::Vector2 newPos =
-				m_position + m_velocity;
+			Engine::Math::Vector2 newPos(
+				m_position.GetX() + (m_velocity.GetX() * delta),
+				m_position.GetY() + (m_velocity.GetY() * delta)
+			);
+				/*m_position + m_velocity;*/
 
 			float halfWidth = (WIDTH / 2.0f);
 			float halfHeight = (HEIGHT / 2.0f);
