@@ -1,18 +1,17 @@
 #include "App.hpp"
 
-#include <iostream>
 #include <algorithm>
 
 // OpenGL includes
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
 
+//
 #include <fstream>
-#include <sstream>
-#include <string>
 
 //
 #include "Configuration.hpp"
+#include <iostream>
 
 namespace Engine
 {
@@ -21,12 +20,13 @@ namespace Engine
 
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
-		, m_width(width)
-		, m_height(height)
-		, m_nUpdates(0)
-		, m_timer(new TimeManager)
-		, m_mainWindow(nullptr)
-		, m_currentIndex(0)
+		  , m_width(width)
+		  , m_height(height)
+		  , m_nUpdates(0)
+		  , m_timer(new TimeManager)
+		  , m_mainWindow(nullptr)
+		  , m_context(nullptr)
+		  , m_currentIndex(0)
 	{
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
@@ -118,22 +118,17 @@ namespace Engine
 		switch (keyBoardEvent.keysym.scancode)
 		{
 		case SDL_SCANCODE_W:
-			std::cout << "You are pressing W\n";
 			m_entities[m_currentIndex]->MoveUp();
 			break;
 		case SDL_SCANCODE_A:
-			std::cout << "You are pressing A\n";
 			m_entities[m_currentIndex]->MoveLeft();
 			break;
 		case SDL_SCANCODE_S:
-			std::cout << "You are pressing S\n";
 			break;
 		case SDL_SCANCODE_D:
-			std::cout << "You are pressing D\n";
 			m_entities[m_currentIndex]->MoveRight();
 			break;
-		default:			
-			//SDL_Log("%S was pressed.", keyBoardEvent.keysym.scancode);
+		default:
 			SDL_Log("Physical %s key acting as %s key",
 				SDL_GetScancodeName(keyBoardEvent.keysym.scancode),
 				SDL_GetKeyName(keyBoardEvent.keysym.sym));
@@ -145,26 +140,12 @@ namespace Engine
 	{
 		switch (keyBoardEvent.keysym.scancode)
 		{
-		case SDL_SCANCODE_W:
-			std::cout << "You are releasing W\n";
-			break;
-		case SDL_SCANCODE_A:
-			std::cout << "You are releasing A\n";
-			break;
-		case SDL_SCANCODE_S:
-			std::cout << "You are releasing S\n";
-			break;
-		case SDL_SCANCODE_D:
-			std::cout << "You are releasing D\n";
-			break;
 		case SDL_SCANCODE_P:
 			m_currentIndex++;
 			if (m_currentIndex > (m_entities.size() - 1))
 			{
 				m_currentIndex = 0;
 			}
-
-			std::cout << m_currentIndex << std::endl;
 			break;
 		case SDL_SCANCODE_ESCAPE:
 			OnExit();
@@ -181,6 +162,7 @@ namespace Engine
 
 		// Update code goes here
 		//
+		m_entities[m_currentIndex]->Update(DESIRED_FRAME_TIME);
 
 		double endTime = m_timer->GetElapsedTimeInSeconds();
 		double nextTimeFrame = startTime + DESIRED_FRAME_TIME;
@@ -251,7 +233,7 @@ namespace Engine
 		return true;
 	}
 
-	void App::SetupViewport()
+	void App::SetupViewport() const
 	{
 		// Defining ortho values
 		//
@@ -288,7 +270,7 @@ namespace Engine
 		return true;
 	}
 
-	void App::CleanupSDL()
+	void App::CleanupSDL() const
 	{
 		// Cleanup
 		//

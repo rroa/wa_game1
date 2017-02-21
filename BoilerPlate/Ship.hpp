@@ -27,9 +27,12 @@ namespace Asteroids
 			void MoveUp();
 			void MoveRight();
 			void MoveLeft();
+			void Update(float delta);
 			void Draw();
 		private:
 			std::vector<Engine::Math::Vector2> m_points;
+			Engine::Math::Vector2 m_velocity;
+			float m_mass;
 		};
 	}
 }

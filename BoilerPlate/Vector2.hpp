@@ -14,6 +14,7 @@ namespace Engine
 			 * CONST
 			 */
 			Vector2( );
+			Vector2( float uniform );
 			Vector2( float x, float y );
 
 			/*

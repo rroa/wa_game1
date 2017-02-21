@@ -1,6 +1,6 @@
 #include "Vector2.hpp"
 #include <cmath>
-
+#include <string>
 namespace Engine
 {
 	namespace Math
@@ -10,6 +10,16 @@ namespace Engine
 			, m_y( 0.0f )
 			, m_length( 0.0f )
 		{}
+
+		Vector2::Vector2(float uniform)
+			: m_x(uniform)
+			, m_y(uniform)
+			, m_length( 0 )
+		{
+			// Calculate length for the given point
+			//
+			Length();
+		}
 
 		Vector2::Vector2(float x, float y)
 			: m_x( x )
