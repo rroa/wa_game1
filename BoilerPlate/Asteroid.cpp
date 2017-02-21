@@ -1,118 +1,119 @@
 #include "Asteroid.hpp"
-#include "Constants.hpp"
+
+//
 #include <SDL2/SDL_opengl.h>
+
+//
+#include "Constants.hpp"
+#include "RigidBodyComponent.hpp"
+#include "TransformationComponent.hpp"
+#include "MathUtilities.hpp"
+#include "Scene.hpp"
 
 namespace Asteroids
 {
 	namespace Entities
 	{
-		const size_t NUM_POINTS = 16;
+		const int NUM_POINTS = 16;
 		const float MIN_SIZE = 25.0f;
 		const float MAX_SIZE = 45.0f;
+		const float ROTATION_SPEED = 120.0f;
 
 		Asteroid::Asteroid(AsteroidSize::Size size)
 			: m_size(size)
-			, m_angle(0.0f)
-			, m_rotation(120)
 		{
-			m_sizeFactor = (int)size + 1;
+			m_sizeFactor = static_cast<int>(size) + 1;
 
-			// Calculating the MIN/MAX size of the asteroid based on the size enum value
+			// Transforms
 			//
-			float min = MIN_SIZE / m_sizeFactor;
-			float max = MAX_SIZE / m_sizeFactor;
+			m_transforms = new Engine::Components::TransformationComponent();
 
-			//type = ASTEROID_PLAYERTYPE;
+			// Attaching transformation component
+			//
+			AttachComponent(m_transforms);
 
-			for (size_t i = 0; i < NUM_POINTS; ++i)
-			{
-				const float radians = (i / static_cast<float>(NUM_POINTS)) * 2.0f * Engine::Math::PI;
-				// TODO: RR: Move this to a rand in range function
-				const float randDist = min + (max - min) * (rand() / static_cast<float>(RAND_MAX));
+			// Physics
+			//
+			m_physics = new Engine::Components::RigidBodyComponent(
+				Engine::Math::Vector2(0.0f), // No gravity
+				m_transforms->GetPosition(),
+				1.0f,
+				1.0f // No friction
+			);
 
-				m_points.push_back(Engine::Math::Vector2(sinf(radians) * randDist, cosf(radians) * randDist));
-			}
+			// Attaching physics component
+			//
+			AttachComponent(m_physics);
 
-			//m_radius = (min + max) * 0.5f;
+			//
+			Generate();
+			ApplyRandomImpulse();
 		}
 
 		void Asteroid::Update(float deltaTime)
 		{
 			// Rotate the asteroid.
 			//
-			m_angle += m_rotation * deltaTime;
+			float angle = m_transforms->GetAngleInDegrees() + ROTATION_SPEED * deltaTime;
+			m_transforms->RotateInDegrees(angle);
 
 			Entity::Update(deltaTime);
 		}
 
-		/*void Asteroid::ApplyImpulse(Engine::Math::Vector2 impulse)
-		{*/
-			/*if (m_mass > 0)
-			{
-				m_velocity.x += (impulse.x / m_mass) * cosf(m_rotation * (Engine::Math::PI / 180)) + m_sizeFactor;
-				m_velocity.y += (impulse.y / m_mass) * sinf(m_rotation * (Engine::Math::PI / 180)) + m_sizeFactor;
-			}*/
-		//}
-
-		Asteroid::AsteroidSize::Size Asteroid::GetSize() const
-		{
-			return m_size;
-		}
-
 		void Asteroid::Render()
 		{
-			/*glLoadIdentity();
-			glTranslatef(m_position.x, m_position.y, 0.0f);
-			glRotatef(m_angle, 0.0f, 0.0f, 1.0f);
-
-			glBegin(GL_LINE_LOOP);
-
-			std::vector<Engine::Vector2>::iterator it = m_points.begin();
-			for (; it != m_points.end(); ++it)
-			{
-				glVertex2f((*it).x, (*it).y);
-			}
-
-			glEnd();*/
-
-			//glLoadIdentity();
-			//DrawCircle(m_position.x, m_position.y, m_radius, 16);
+			Entity::Render(GL_LINE_LOOP, m_points);
 		}
 
-		void Asteroid::DrawCircle(float cx, float cy, float r, int num_segments)
+		void Asteroid::Generate()
 		{
-			float theta = 2 * 3.1415926 / float(num_segments);
-			float tangetial_factor = tanf(theta);//calculate the tangential factor 
+			// Calculating the MIN/MAX size of the asteroid based on the size enum value
+			//
+			float min = MIN_SIZE / m_sizeFactor;
+			float max = MAX_SIZE / m_sizeFactor;
 
-			float radial_factor = cosf(theta);//calculate the radial factor 
-
-			float x = r;//we start at angle = 0 
-
-			float y = 0;
-
-			glBegin(GL_LINE_LOOP);
-			for (int ii = 0; ii < num_segments; ii++)
+			// Randomly generate points for asteroid
+			//
+			for (int idx = 0; idx < NUM_POINTS; ++idx)
 			{
-				glVertex2f(x + cx, y + cy);//output vertex 
+				const float radians = (idx / static_cast<float>(NUM_POINTS)) * 2.0f * Engine::Math::PI;
+				const float randDist = Engine::Math::RandomInRange<float>(min, max);
 
-										   //calculate the tangential vector 
-										   //remember, the radial vector is (x, y) 
-										   //to get the tangential vector we flip those coordinates and negate one of them 
-
-				float tx = -y;
-				float ty = x;
-
-				//add the tangential vector 
-
-				x += tx * tangetial_factor;
-				y += ty * tangetial_factor;
-
-				//correct using the radial factor 
-
-				x *= radial_factor;
-				y *= radial_factor;
+				m_points.push_back(Engine::Math::Vector2(sinf(radians) * randDist, cosf(radians) * randDist));
 			}
-			glEnd();
+		}
+
+		void Asteroid::ApplyRandomImpulse() const
+		{
+			float x = Engine::Math::RandomInRange<float>(-150.0f, 150.0f);
+			float y = Engine::Math::RandomInRange<float>(-150.0f, 150.0f);
+
+			m_physics->ApplyForce(
+				Engine::Math::Vector2(x, y) + static_cast<float>(m_sizeFactor),
+				m_transforms->GetAngleIRadians()
+			);
+		}
+
+		void Asteroid::ApplyRandomTranslation() const
+		{
+			Scene* scene = dynamic_cast<Scene*>(GetParent());
+			if (!scene) return;
+
+			float dimensions[2];
+
+			dimensions[0] = (scene->GetWidth() / 2.0f);
+			dimensions[1] = (scene->GetHeight() / 2.0f);
+
+			const int sideAxis = rand() & 1;
+			const float sideDir = (rand() & 1) ? 1.0f : -1.0f;
+
+			const int otherSideAxis = (sideAxis + 1) & 1;
+
+			float point[2];
+			point[sideAxis] = sideDir * dimensions[sideAxis];
+			point[otherSideAxis] = Engine::Math::RandomInRange<float>(dimensions[otherSideAxis] * -1.0f, dimensions[otherSideAxis]);
+
+			m_transforms->Teleport(point[0], point[1]);
 		}
 	}
 }

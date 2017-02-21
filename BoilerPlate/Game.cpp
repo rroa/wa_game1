@@ -1,7 +1,12 @@
 #include "Game.hpp"
+
+//
+#include <iostream>
+
+//
 #include "Configuration.hpp"
 #include "InputSystem.hpp"
-#include <iostream>
+#include "Asteroid.hpp"
 
 namespace Engine {namespace Systems {
 	class InputSystem;
@@ -15,6 +20,7 @@ namespace Asteroids
 		, m_width(width)
 		, m_height(height)
 		, m_currentIndex(0)
+		, m_currentShip(nullptr)
 	{}
 
 	Game::~Game()
@@ -27,9 +33,10 @@ namespace Asteroids
 		//
 		for (auto entity : m_ships)
 		{
-			// TODO: RR: Let this leak, for now
-			// TODO: RR: Make the destructor for the GO's add a nullptr value to allocs
-			//if(entity != nullptr) delete entity;
+			//
+			if (entity->id == m_currentShip->id) continue;
+			
+			delete entity;
 		}
 
 		// Clear list
@@ -43,12 +50,7 @@ namespace Asteroids
 		//
 		Utilities::Configuration config;
 		m_ships = config.LoadModels();
-
-		/*m_currentIndex++;
-		if (m_currentIndex > (m_entities.size() - 1))
-		{
-			m_currentIndex = 0;
-		}*/
+		m_currentShip = m_ships[m_currentIndex];
 
 		// Create the scene
 		//
@@ -58,8 +60,13 @@ namespace Asteroids
 			m_height
 		);
 
-		// TODO:: RR: Add the other objects here!
-		m_scene->AddChild(m_ships[m_currentIndex]);
+		// Adding the player (ship)
+		//		
+		m_scene->AddChild(m_currentShip);
+		
+		// Adding the enemies (asteroids)
+		//
+		CreateAsteroids(10);
 	}
 
 	void Game::Update(float delta)
@@ -97,5 +104,39 @@ namespace Asteroids
 			m_ships[m_currentIndex]->MoveRight();
 		}
 
+		if (Engine::Systems::InputSystem::Instance().IsKeyDown('p'))
+		{
+			m_currentIndex++;
+			if (m_currentIndex > (m_ships.size() - 1))
+			{
+				m_currentIndex = 0;
+			}
+
+			// Point to the new ship
+			//
+			/*m_scene->RemoveChild(m_currentShip);
+			m_currentShip = m_ships[m_currentIndex];
+			m_scene->AddChild(m_currentShip);*/
+
+			std::cout << "Current Id " << m_currentShip->id << std::endl;
+			std::cout << "Current Index " << m_currentIndex << std::endl;
+		}
+	}
+	void Game::CreateAsteroids(int amount) const
+	{
+		for (int i = 0; i < amount; ++i)
+		{
+			// Create new Asteroid
+			Entities::Asteroid* pAsteroid = 
+				new Entities::Asteroid(Entities::Asteroid::AsteroidSize::BIG);
+
+			// Add asteroid to the scene
+			//
+			m_scene->AddChild(pAsteroid);
+
+			// Apply random translation to the new asteroid
+			//
+			pAsteroid->ApplyRandomTranslation();
+		}
 	}
 }

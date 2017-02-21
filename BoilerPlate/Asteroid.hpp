@@ -13,7 +13,7 @@ namespace Asteroids
 {
 	namespace  Entities
 	{
-		class Asteroid : public Entities::Entity
+		class Asteroid : public Entity
 		{
 		public:
 			/* =============================================================
@@ -35,16 +35,27 @@ namespace Asteroids
 			explicit Asteroid(AsteroidSize::Size size);
 			void Update(float deltaTime) override;
 			void Render() override;
-			AsteroidSize::Size GetSize() const;
+			void ApplyRandomTranslation() const;
+
+			/* =============================================================
+			* GETTER FUNCTIONS
+			* ============================================================= */
+			AsteroidSize::Size GetSize() const { return m_size; };
 		private:
-			void DrawCircle(float cx, float cy, float r, int num_segments);
-			std::vector<Engine::Math::Vector2>    m_points;
-			AsteroidSize::Size				m_size;
-			int								m_sizeFactor;
-			float							m_angle;
-			float							m_rotation;
+			/* =============================================================
+			* PRIVATE FUNCTIONS
+			* ============================================================= */
+			void Generate();
+			void ApplyRandomImpulse() const;
+
+			/* =============================================================
+			* MEMBERS
+			* ============================================================= */
+			std::vector<Engine::Math::Vector2> m_points;
+			AsteroidSize::Size m_size;
+			int m_sizeFactor;
 		};
-	}	
+	}
 }
 
 #endif // !_ASTEROID_H_

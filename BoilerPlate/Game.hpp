@@ -28,6 +28,7 @@ namespace Asteroids
 		* PRIVATE FUNCTIONS
 		* ============================================================= */
 		void HandleInput();
+		void CreateAsteroids(int amount) const;
 
 		/* =============================================================
 		* MEMBERS
@@ -36,7 +37,8 @@ namespace Asteroids
 		int m_width;
 		int m_height;
 		int	m_currentIndex;
-		std::vector<Asteroids::Entities::Ship*> m_ships;
+		Entities::Ship* m_currentShip;
+		std::vector<Entities::Ship*> m_ships;
 	};
 }
 

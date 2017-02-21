@@ -25,7 +25,9 @@ namespace Asteroids
 		}
 
 		Entity::Entity()
-			: m_halfWidth(0)
+			: m_transforms(nullptr)
+		    , m_physics(nullptr)
+		    , m_halfWidth(0)
 			, m_halfHeight(0)
 		{}
 
@@ -39,16 +41,13 @@ namespace Asteroids
 			m_halfWidth = (scene->GetWidth() / 2.0f);
 			m_halfHeight = (scene->GetHeight() / 2.0f);
 
-			Engine::Components::RigidBodyComponent* physics = GetComponent<Engine::Components::RigidBodyComponent>();
-			Engine::Components::TransformationComponent* transforms = GetComponent<Engine::Components::TransformationComponent>();
-
-			if (!physics || !transforms) return;
+			if (!m_physics || !m_transforms) return;
 
 			// Time stepping the position
 			//
 			Engine::Math::Vector2 newPos(
-				transforms->GetPosition().x + (physics->GetVelocity().x * deltaTime),
-				transforms->GetPosition().y + (physics->GetVelocity().y * deltaTime)
+				m_transforms->GetPosition().x + (m_physics->GetVelocity().x * deltaTime),
+				m_transforms->GetPosition().y + (m_physics->GetVelocity().y * deltaTime)
 			);
 
 			// Getting axis limits
@@ -64,7 +63,7 @@ namespace Asteroids
 			float y = wrap(newPos.y, worldMinY, worldMaxY);
 
 			// Set the new position
-			transforms->Teleport(x, y);
+			m_transforms->Teleport(x, y);
 
 			// Base update
 			//

@@ -9,6 +9,8 @@
 // ENGINE
 #include "Vector2.hpp"
 #include "GameObject.hpp"
+#include "TransformationComponent.hpp"
+#include "RigidBodyComponent.hpp"
 
 namespace Asteroids
 {
@@ -27,6 +29,9 @@ namespace Asteroids
 			* ============================================================= */
 			void Update(float delta) override;
 			void Render(unsigned int mode, std::vector<Engine::Math::Vector2> points);
+		protected:
+			Engine::Components::TransformationComponent* m_transforms;
+			Engine::Components::RigidBodyComponent* m_physics;
 		private:
 			float m_halfWidth;
 			float m_halfHeight;
