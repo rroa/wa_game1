@@ -1,6 +1,6 @@
 #if _MSC_VER && _DEBUG
-	#define _CRTDBG_MAP_ALLOC
-	#include <crtdbg.h>
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
 #endif
 
 // C++ STL
@@ -9,7 +9,6 @@
 
 // 
 #include "App.hpp"
-#include "Utilities.hpp"
 
 const int WIDTH = 1136;
 const int HEIGHT = 640;
@@ -24,11 +23,11 @@ int main(int argc, char* argv[])
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-	// Create Game Object
+	// Create App
 	//
 	Engine::App* app = new Engine::App("Boiler Plate!", WIDTH, HEIGHT);
 
-	// Initialize game
+	// Initialize app
 	//
 	if(!app->Init())
 	{

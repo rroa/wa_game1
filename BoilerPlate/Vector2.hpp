@@ -10,43 +10,44 @@ namespace Engine
 		class Vector2
 		{
 		public:
-			/*
-			 * CONST
-			 */
+			/* =============================================================
+			* CTOR
+			* ============================================================= */
 			Vector2( );
 			Vector2( float uniform );
 			Vector2( float x, float y );
 
-			/*
-			 * PUBLIC FUNCTIONS
-			 */
-			float Length();
-			float SquaredLength();
-			const float GetX();
-			const float GetY();
+			/* =============================================================
+			* PUBLIC FUNCTIONS
+			* ============================================================= */
+			float Length() const;
+			float SquaredLength() const;
+			float Vector2::Normalize();
 
-			/*
-			 * OPERATORS
-			 */
+			/* =============================================================
+			* OPERATORS
+			* ============================================================= */
 			Vector2& operator=( const Vector2& rhs );
 			Vector2& operator+=( const Vector2& rhs );
 			Vector2& operator-=( const Vector2& rhs );
 			Vector2& operator*=( const Vector2& rhs );
 			Vector2& operator/=( const Vector2& rhs );
-			Vector2 operator+( const Vector2& rhs );
-			Vector2 operator-( const Vector2& rhs );
-			Vector2 operator-( );
-			Vector2 operator*( const Vector2& rhs );
-			Vector2 operator/( const Vector2& rhs );
-			bool operator==(const Vector2& rhs);
-			bool operator!=(const Vector2& rhs);
+			Vector2 operator+( const Vector2& rhs ) const;
+			Vector2 operator-( const Vector2& rhs ) const;
+			Vector2 operator-( ) const;
+			Vector2 operator*( const Vector2& rhs ) const;
+			Vector2 operator/( const Vector2& rhs ) const;
+			bool operator==(const Vector2& rhs) const;
+			bool operator!=(const Vector2& rhs) const;
 			friend Vector2 operator*(float scaleUnit, const Vector2& rhs);
 			friend Vector2 operator*(const Vector2& lhs, float scaleUnit);
 
-		private:
-			float m_x;
-			float m_y;
-			float m_length;
+			/* =============================================================
+			* MEMBERS
+			* ============================================================= */
+			float x;
+			float y;
+			float length;
 		};
 	}
 }

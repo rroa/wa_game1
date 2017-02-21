@@ -1,6 +1,6 @@
 #pragma once
-#ifndef APP_HPP
-#define APP_HPP
+#ifndef _APP_H_
+#define _APP_H_
 
 // C++ STL
 #include <list>
@@ -10,6 +10,7 @@
 #include "SDLEvent.hpp"
 #include "TimeManager.hpp"
 #include "Ship.hpp"
+#include "Game.hpp"
 
 namespace Engine
 {
@@ -19,7 +20,7 @@ namespace Engine
 		/* =============================================================
 		* ENUMERATORS
 		* ============================================================= */
-		struct GameState
+		struct AppState
 		{
 			enum State
 			{
@@ -40,7 +41,7 @@ namespace Engine
 		void Execute						( );
 		bool Init							( );
 		void Update							( );
-		void Render							( );
+		void Render							( ) const;
 	private:
 		/* =============================================================
 		 * PRIVATE FUNCTIONS
@@ -65,14 +66,12 @@ namespace Engine
 		std::string							m_title;
 		SDL_Window*							m_mainWindow;
 		SDL_GLContext						m_context;
-		GameState::State					m_state;
+		AppState::State						m_state;
 		Engine::TimeManager*				m_timer;
 
 
 		//
-		int									m_currentIndex;
-		std::vector<Asteroids::Entities::Ship*> m_entities;
-
+		Asteroids::Game* m_game;
 	};
 }
-#endif /* GAME_HPP */
+#endif /* _APP_H_ */

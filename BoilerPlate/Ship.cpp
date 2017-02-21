@@ -3,133 +3,83 @@
 
 //
 #include <cmath>
-
-//
-#include "Constants.hpp"
-
+#include "MathUtilities.hpp"
 
 namespace Asteroids
 {
 	namespace Entities
 	{
-		inline float wrap(float axis, float min, float max)
-		{
-			if (axis < min)
-			{
-				return max - (min - axis);
-			}
-
-			if (axis > max)
-			{
-				return min + (axis - max);
-			}
-
-			return axis;
-		}
-
 		const float ANGLE_OFFSET = 90.0f;
 		const float THRUST = 3.0f;
 		const float MAX_SPEED = 350.0f;
-		const float DRAG = 0.999f;
-		const int WIDTH = 1136;
-		const int HEIGHT = 640;
+		const float ROTATION_SPEED = 5.0f;
 
-		Ship::Ship(const std::vector<Engine::Math::Vector2> points)
+		Ship::Ship(const std::vector<Engine::Math::Vector2> points, float mass)
 			: m_points(points)
-			, m_mass(0.5f)
 		{
-			m_angle = 0.0f;
-			m_angleInRads = ANGLE_OFFSET * (Engine::Math::PI / 180);
-		}
-
-		void Ship::MoveUp()
-		{
-			// Calculate impulse
+			// Transforms
 			//
-			if (m_mass > 0)
-			{				
-				float x = (THRUST / m_mass) * std::cosf(m_angleInRads);
-				float y = (THRUST / m_mass) * std::sinf(m_angleInRads);
-				m_velocity += Engine::Math::Vector2(x, y);
-			}
+			m_transforms = new Engine::Components::TransformationComponent();
+
+			// Attaching transformation component
+			//
+			AttachComponent(m_transforms);
+
+			// Physics
+			//
+			m_physics = new Engine::Components::RigidBodyComponent(
+				Engine::Math::Vector2(0.0f),
+				m_transforms->GetPosition(),
+				mass,
+				0.999f
+			);
+			
+			// Attaching physics component
+			//
+			AttachComponent(m_physics);
 		}
 
-		void Ship::MoveRight()
+		void Ship::MoveUp() const
+		{			
+			m_physics->ApplyForce(
+				Engine::Math::Vector2(THRUST), 
+				m_transforms->GetAngleIRadians() + Engine::Math::DegreesToRadians(ANGLE_OFFSET)
+			);
+		}
+
+		void Ship::MoveRight() const
 		{
-			m_angle -= 5.0f;
-			m_angleInRads = (m_angle + ANGLE_OFFSET) * (Engine::Math::PI / 180);
+			m_transforms->RotateInDegrees(m_transforms->GetAngleInDegrees() - ROTATION_SPEED);
 		}
 
-		void Ship::MoveLeft()
+		void Ship::MoveLeft() const
 		{
-			m_angle += 5.0f;
-			m_angleInRads = (m_angle + ANGLE_OFFSET) * (Engine::Math::PI / 180);
+			m_transforms->RotateInDegrees(m_transforms->GetAngleInDegrees() + ROTATION_SPEED);
 		}
 
-		void Ship::Update(float delta)
+		void Ship::Update(float deltaTime)
 		{
 			// Clamp speed
 			//
-			float speed = std::fabs(m_velocity.Length());
+			float speed = fabs(m_physics->GetVelocity().Length());
 			if (speed > MAX_SPEED)
 			{
-				m_velocity = Engine::Math::Vector2(
-					(m_velocity.GetX() / speed) * MAX_SPEED,
-					(m_velocity.GetY() / speed) * MAX_SPEED
-					);
-
-				speed = std::fabs(m_velocity.Length());
-			}
-
-			// Apply drag
-			//
-			m_velocity = Engine::Math::Vector2(
-				m_velocity.GetX() * DRAG,
-				m_velocity.GetY() * DRAG
+				m_physics->SetVelocity(
+					Engine::Math::Vector2(
+						(m_physics->GetVelocity().x / speed) * MAX_SPEED,
+						(m_physics->GetVelocity().y / speed) * MAX_SPEED
+					)
 				);
 
+				m_currentSpeed = fabs(m_physics->GetVelocity().Length());
+			}
 
-			// New position
-			//
-			Engine::Math::Vector2 newPos(
-				m_position.GetX() + (m_velocity.GetX() * delta),
-				m_position.GetY() + (m_velocity.GetY() * delta)
-			);
-				/*m_position + m_velocity;*/
-
-			float halfWidth = (WIDTH / 2.0f);
-			float halfHeight = (HEIGHT / 2.0f);
-
-			float worldMinX = -halfWidth;
-			float worldMaxX = halfWidth;
-
-			float worldMinY = -halfHeight;
-			float worldMaxY = halfHeight;
-
-			// Wrap!
-			float x = wrap(newPos.GetX(), worldMinX, worldMaxX);
-			float y = wrap(newPos.GetY(), worldMinY, worldMaxY);
-
-			newPos = Engine::Math::Vector2(x, y);
-
-			Entity::Translate(newPos);
+			Entity::Update(deltaTime);
 		}
 
-		void Ship::MoveRight()
+		void Ship::Render()
 		{
-			m_angle -= 5.0f;
-			m_angleInRads = (m_angle + ANGLE_OFFSET) * (Engine::Math::PI / 180);
-		}
-
-		void Ship::MoveLeft()
-		{
-			m_angle += 5.0f;
-			m_angleInRads = (m_angle + ANGLE_OFFSET) * (Engine::Math::PI / 180);
-		}
-
-		void Ship::Draw()
-		{
-			Entity::Draw(GL_LINE_LOOP, m_points);
+			Entity::Render(GL_LINE_LOOP, m_points);
 		}
 	}
 }

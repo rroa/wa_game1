@@ -2,8 +2,6 @@
 // OPENGL
 #include <SDL2\SDL_opengl.h>
 
-#include <iostream>
-
 namespace Engine
 {
 	namespace Graphics
@@ -21,7 +19,7 @@ namespace Engine
 
 			// Translate
 			//
-			glTranslatef(m_position.GetX(), m_position.GetY(), 0.0f);
+			glTranslatef(m_position.x, m_position.y, 0.0f);
 
 			// Rotate
 			//
@@ -32,7 +30,7 @@ namespace Engine
 			glBegin(mode);
 				for(auto point : points)
 				{
-					glVertex2f(point.GetX(), point.GetY());
+					glVertex2f(point.x, point.y);
 				}				
 			glEnd();
 		}

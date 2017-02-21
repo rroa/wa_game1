@@ -1,17 +1,12 @@
 #include "App.hpp"
 
-#include <algorithm>
-
 // OpenGL includes
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
 
 //
-#include <fstream>
-
-//
-#include "Configuration.hpp"
 #include <iostream>
+#include "InputSystem.hpp"
 
 namespace Engine
 {
@@ -26,44 +21,39 @@ namespace Engine
 		  , m_timer(new TimeManager)
 		  , m_mainWindow(nullptr)
 		  , m_context(nullptr)
-		  , m_currentIndex(0)
+		  , m_game(nullptr)
 	{
-		m_state = GameState::UNINITIALIZED;
+		m_state = AppState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
+		m_game = new Asteroids::Game(width, height);
 	}
 
 	App::~App()
 	{
-		// Delete entities
+		// Delete the game
 		//
-		for (auto entity : m_entities)
-		{
-			delete entity;
-		}
-
-		// Clear list
-		//
-		m_entities.clear();
+		delete m_game;
 
 		// Timer
 		m_timer->Stop();
 		delete m_timer;
 
+		//
 		CleanupSDL();
 	}
 
 	void App::Execute()
 	{
-		if (m_state != GameState::INIT_SUCCESSFUL)
+		if (m_state != AppState::INIT_SUCCESSFUL)
 		{
 			std::cerr << "Game INIT was not successful." << std::endl;
 			return;
 		}
 
-		m_state = GameState::RUNNING;
+		m_state = AppState::RUNNING;
 
 		SDL_Event event;
-		while (m_state == GameState::RUNNING)
+		while (m_state == AppState::RUNNING)
 		{
 			// Input polling
 			//
@@ -85,7 +75,7 @@ namespace Engine
 		bool success = SDLInit() && GlewInit();
 		if (!success)
 		{
-			m_state = GameState::INIT_FAILED;
+			m_state = AppState::INIT_FAILED;
 			return false;
 		}
 
@@ -93,65 +83,31 @@ namespace Engine
 		//
 		SetupViewport();
 
-		// Change game state
+		// Change app state
 		//
-		m_state = GameState::INIT_SUCCESSFUL;
+		m_state = AppState::INIT_SUCCESSFUL;
 
-		// Loading models
+		// Init Game
 		//
-		Asteroids::Utilities::Configuration config;
-		m_entities = config.LoadModels();
+		m_game->Init();
 
 		return true;
 	}
 
 	void App::OnKeyDown(SDL_KeyboardEvent keyBoardEvent)
-	{		
-
-		/* 
-		 * W (UP)
-		 * A (LEFT)
-		 * S (DOWN)
-		 * D (RIGHT)
-		 */
-
-		switch (keyBoardEvent.keysym.scancode)
-		{
-		case SDL_SCANCODE_W:
-			m_entities[m_currentIndex]->MoveUp();
-			break;
-		case SDL_SCANCODE_A:
-			m_entities[m_currentIndex]->MoveLeft();
-			break;
-		case SDL_SCANCODE_S:
-			break;
-		case SDL_SCANCODE_D:
-			m_entities[m_currentIndex]->MoveRight();
-			break;
-		default:
-			SDL_Log("Physical %s key acting as %s key",
-				SDL_GetScancodeName(keyBoardEvent.keysym.scancode),
-				SDL_GetKeyName(keyBoardEvent.keysym.sym));
-			break;
-		}
+	{
+		OnKeyboardDownEvent(keyBoardEvent.keysym.sym);
 	}
 
 	void App::OnKeyUp(SDL_KeyboardEvent keyBoardEvent)
 	{
 		switch (keyBoardEvent.keysym.scancode)
 		{
-		case SDL_SCANCODE_P:
-			m_currentIndex++;
-			if (m_currentIndex > (m_entities.size() - 1))
-			{
-				m_currentIndex = 0;
-			}
-			break;
 		case SDL_SCANCODE_ESCAPE:
 			OnExit();
 			break;
 		default:
-			//DO NOTHING
+			OnKeyboardUpEvent(keyBoardEvent.keysym.sym);
 			break;
 		}
 	}
@@ -160,9 +116,9 @@ namespace Engine
 	{
 		double startTime = m_timer->GetElapsedTimeInSeconds();
 
-		// Update code goes here
+		// Update the game!
 		//
-		m_entities[m_currentIndex]->Update(DESIRED_FRAME_TIME);
+		m_game->Update(DESIRED_FRAME_TIME);
 
 		double endTime = m_timer->GetElapsedTimeInSeconds();
 		double nextTimeFrame = startTime + DESIRED_FRAME_TIME;
@@ -180,13 +136,11 @@ namespace Engine
 		m_nUpdates++;
 	}
 
-	void App::Render()
+	void App::Render() const
 	{
-		glClearColor(0.1f, 0.1f, 0.15f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-
+		// Render the game's current frame
 		//
-		m_entities[m_currentIndex]->Draw();
+		m_game->Render();
 
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
@@ -294,6 +248,6 @@ namespace Engine
 	{
 		// Exit main for loop
 		//
-		m_state = GameState::QUIT;
+		m_state = AppState::QUIT;
 	}
 }
