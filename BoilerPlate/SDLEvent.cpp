@@ -1,6 +1,6 @@
 #include "SDLEvent.hpp"
 
-namespace Engine
+namespace Application
 {
 	SDLEvent::SDLEvent()
 	{}

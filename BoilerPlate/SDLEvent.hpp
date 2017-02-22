@@ -5,7 +5,7 @@
 
 #include <SDL2/SDL.h>
 
-namespace Engine
+namespace Application
 {
 	class SDLEvent
 	{

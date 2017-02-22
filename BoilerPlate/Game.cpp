@@ -5,13 +5,8 @@
 
 //
 #include "Configuration.hpp"
-#include "InputSystem.hpp"
+#include "InputManager.hpp"
 #include "Asteroid.hpp"
-
-namespace Engine {namespace Systems {
-	class InputSystem;
-}
-}
 
 namespace Asteroids
 {
@@ -46,7 +41,7 @@ namespace Asteroids
 		// Adding the player (ship)
 		//
 		CreatePlayer();
-		
+
 		// Adding the enemies (asteroids)
 		//
 		CreateAsteroids(10);
@@ -72,22 +67,22 @@ namespace Asteroids
 
 	void Game::HandleInput() const
 	{
-		if (Engine::Systems::InputSystem::Instance().IsKeyDown('w'))
+		if (Engine::Input::InputManager::Instance().IsKeyPressed('w'))
 		{
 			m_player->MoveUp();
 		}
 
-		if (Engine::Systems::InputSystem::Instance().IsKeyDown('a'))
+		if (Engine::Input::InputManager::Instance().IsKeyPressed('a'))
 		{
 			m_player->MoveLeft();
 		}
 
-		if (Engine::Systems::InputSystem::Instance().IsKeyDown('d'))
+		if (Engine::Input::InputManager::Instance().IsKeyPressed('d'))
 		{
 			m_player->MoveRight();
 		}
 
-		if (Engine::Systems::InputSystem::Instance().IsKeyDown('p'))
+		if (Engine::Input::InputManager::Instance().IsKeyReleased('p'))
 		{
 			m_player->ChangeShip();
 		}
@@ -110,7 +105,7 @@ namespace Asteroids
 		for (int i = 0; i < amount; ++i)
 		{
 			// Create new Asteroid
-			Entities::Asteroid* pAsteroid = 
+			Entities::Asteroid* pAsteroid =
 				new Entities::Asteroid(Entities::Asteroid::AsteroidSize::BIG);
 
 			// Add asteroid to the scene

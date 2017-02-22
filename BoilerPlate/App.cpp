@@ -6,9 +6,9 @@
 
 //
 #include <iostream>
-#include "InputSystem.hpp"
+#include "InputManager.hpp"
 
-namespace Engine
+namespace Application
 {
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
@@ -20,7 +20,7 @@ namespace Engine
 		, m_title(title)
 		, m_mainWindow(nullptr)
 		, m_context(nullptr)
-		, m_timer(new TimeManager)
+		, m_timer(new Engine::TimeManager)
 		, m_game(nullptr)
 	{
 		m_state = AppState::UNINITIALIZED;
@@ -40,6 +40,9 @@ namespace Engine
 		// Timer
 		m_timer->Stop();
 		delete m_timer;
+
+		// Singletons
+		Engine::Input::InputManager::Instance().Destroy();
 
 		//
 		CleanupSDL();
@@ -68,6 +71,9 @@ namespace Engine
 			//
 			Update();
 			Render();
+
+			//
+			KeyboardPollEvent();
 		}
 	}
 
@@ -110,7 +116,7 @@ namespace Engine
 			OnExit();
 			break;
 		default:
-			OnKeyboardUpEvent(keyBoardEvent.keysym.sym);
+			OnKeyboardReleasedEvent(keyBoardEvent.keysym.sym);
 			break;
 		}
 	}
