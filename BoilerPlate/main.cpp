@@ -25,17 +25,17 @@ int main(int argc, char* argv[])
 
 	// Create App
 	//
-	Engine::App* app = new Engine::App("Asteroids", WIDTH, HEIGHT);
+	Application::App* app = new Application::App("Asteroids", WIDTH, HEIGHT);
 
 	// Initialize app
 	//
-	if(!app->Init())
+	if (!app->Init())
 	{
 		std::cout << "App Init error!\n";
 		return -1;
 	}
 
-	// Execute game
+	// Execute the app
 	//
 	app->Execute();
 

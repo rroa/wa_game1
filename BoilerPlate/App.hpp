@@ -6,7 +6,7 @@
 #include "TimeManager.hpp"
 #include "Game.hpp"
 
-namespace Engine
+namespace Application
 {
 	class App : public SDLEvent
 	{
@@ -61,8 +61,7 @@ namespace Engine
 		SDL_Window*							m_mainWindow;
 		SDL_GLContext						m_context;
 		AppState::State						m_state;
-		TimeManager*						m_timer;
-
+		Engine::TimeManager*				m_timer;
 
 		//
 		Asteroids::Game*					m_game;

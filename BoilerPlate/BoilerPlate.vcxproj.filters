@@ -45,9 +45,6 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Game\Source files\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="InputSystem.cpp">
-      <Filter>Engine\Source files\Systems</Filter>
-    </ClCompile>
     <ClCompile Include="Matrix2.cpp">
       <Filter>Engine\Source files\Math</Filter>
     </ClCompile>
@@ -56,6 +53,9 @@
     </ClCompile>
     <ClCompile Include="Asteroid.cpp">
       <Filter>Game\Source files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Engine\Source files\Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -110,9 +110,6 @@
     <ClInclude Include="Scene.hpp">
       <Filter>Game\Header files\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="InputSystem.hpp">
-      <Filter>Engine\Header files\Systems</Filter>
-    </ClInclude>
     <ClInclude Include="Matrix2.hpp">
       <Filter>Engine\Header files\Math</Filter>
     </ClInclude>
@@ -121,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="Asteroid.hpp">
       <Filter>Game\Header files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.hpp">
+      <Filter>Engine\Header files\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -189,6 +189,12 @@
     </Filter>
     <Filter Include="Engine\Source files\Systems">
       <UniqueIdentifier>{cd3a5f77-836b-49ae-be7b-b7c7d89a7535}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Source files\Input">
+      <UniqueIdentifier>{d926f742-7659-40a5-a357-d1bbeb052bb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Header files\Input">
+      <UniqueIdentifier>{f2aa98aa-2e09-48e7-91ed-1b49e5c7de3c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
