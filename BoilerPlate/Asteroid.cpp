@@ -22,6 +22,10 @@ namespace Asteroids
 		Asteroid::Asteroid(AsteroidSize::Size size)
 			: m_size(size)
 		{
+			if (size == AsteroidSize::BIG) m_radius = 40.f;
+			if (size == AsteroidSize::MEDIUM) m_radius = 20.f;
+			if (size == AsteroidSize::SMALL) m_radius = 10.f;
+
 			m_sizeFactor = static_cast<int>(size) + 1;
 
 			// Transforms

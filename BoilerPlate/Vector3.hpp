@@ -11,6 +11,7 @@ namespace Engine
 			* CTOR
 			* ============================================================= */
 			explicit Vector3();
+			explicit Vector3(float uniform);
 			explicit Vector3(float x, float y, float z);
 			Vector3(const Vector3& other);
 

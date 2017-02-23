@@ -28,13 +28,20 @@ namespace Asteroids
 			* PUBLIC FUNCTIONS
 			* ============================================================= */
 			void Update(float delta) override;
-			void Render(unsigned int mode, std::vector<Engine::Math::Vector2> points);
+			void Render(unsigned int mode, std::vector<Engine::Math::Vector2> points, Engine::Math::Vector3 color = Engine::Math::Vector3(1.0));
+			
+			//
+			bool IsColliding(Entity* rhs) const;
+			bool CanCollide() const { return m_canCollide; }
+			void SetCollision(bool canCollide) { m_canCollide = canCollide; }
 		protected:
 			Engine::Components::TransformationComponent* m_transforms;
 			Engine::Components::RigidBodyComponent* m_physics;
+			float m_radius;
+			bool m_canCollide;
 		private:
 			float m_halfWidth;
-			float m_halfHeight;
+			float m_halfHeight;			
 		};
 	}
 }

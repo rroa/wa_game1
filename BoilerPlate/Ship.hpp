@@ -9,7 +9,7 @@
 #include "Vector2.hpp"
 #include "Entity.hpp"
 
-typedef std::vector<Engine::Math::Vector2> models;
+typedef std::vector<Engine::Math::Vector2> manifold;
 
 namespace Asteroids
 {
@@ -21,7 +21,7 @@ namespace Asteroids
 			/* =============================================================
 			* CTOR
 			* ============================================================= */
-			Ship(const std::vector<models> ships);
+			Ship(const std::vector<manifold> ships);
 			~Ship();
 
 			/* =============================================================
@@ -33,14 +33,16 @@ namespace Asteroids
 			void ChangeShip();
 			void Update(float deltaTime) override;
 			void Render() override;
+			void Respawn();
 		private:
 			void CalculateMass();
 			/* =============================================================
 			* MEMBERS
 			* ============================================================= */
-			std::vector<models> m_ships;
+			std::vector<manifold> m_ships;
 			float m_currentSpeed;
 			int	m_currentIndex;
+			int m_nRespawnTime;
 		};
 	}
 }

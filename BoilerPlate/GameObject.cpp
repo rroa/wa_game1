@@ -12,8 +12,8 @@ namespace Engine
 	{
 		GameObject::GameObject()
 			: m_scene(nullptr)
-		{
-		}
+			, m_parent(nullptr)
+		{}
 
 		GameObject::~GameObject()
 		{
@@ -35,7 +35,7 @@ namespace Engine
 		void GameObject::RemoveComponent(Component* component)
 		{
 			m_components.erase(
-				std::remove(m_components.begin(), m_components.end(), component), m_components.end()
+				remove(m_components.begin(), m_components.end(), component), m_components.end()
 			);
 
 			delete component;
@@ -53,7 +53,7 @@ namespace Engine
 		void GameObject::RemoveChild(GameObject* child)
 		{
 			m_children.erase(
-				std::remove(m_children.begin(), m_children.end(), child), m_children.end()
+				remove(m_children.begin(), m_children.end(), child), m_children.end()
 			);
 
 			delete child;
@@ -84,12 +84,15 @@ namespace Engine
 
 		void GameObject::Render()
 		{
-			// Render children
-			//
-			std::vector< GameObject* >::iterator child = m_children.begin();
-			for (; child != m_children.end(); ++child)
+			//if ((m_nUpdates % 60) == 0)
 			{
-				(*child)->Render();
+				// Render children
+				//
+				std::vector< GameObject* >::iterator child = m_children.begin();
+				for (; child != m_children.end(); ++child)
+				{
+					(*child)->Render();
+				}
 			}
 		}
 	}

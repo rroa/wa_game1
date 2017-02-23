@@ -14,10 +14,14 @@ namespace Asteroids
 		const float MAX_SPEED = 350.0f;
 		const float ROTATION_SPEED = 5.0f;
 
-		Ship::Ship(const std::vector<models> points)
+		Ship::Ship(const std::vector<manifold> points)
 			: m_ships(points)
 			, m_currentIndex(0)
+			, m_nRespawnTime(0)
 		{
+
+			m_radius = 10.0f;
+
 			// Transforms
 			//
 			m_transforms = new Engine::Components::TransformationComponent();
@@ -96,7 +100,7 @@ namespace Asteroids
 		{
 			// Clamp speed
 			//
-			float speed = fabs(m_physics->GetVelocity().Length());
+			float speed = fabs(m_physics->GetSpeed());
 			if (speed > MAX_SPEED)
 			{
 				m_physics->SetVelocity(
@@ -114,7 +118,30 @@ namespace Asteroids
 
 		void Ship::Render()
 		{
-			Entity::Render(GL_LINE_LOOP, m_ships[m_currentIndex]);
+			if(!m_canCollide)
+			{
+				if(m_nRespawnTime == 120)
+				{
+					SetCollision(true);
+					m_nRespawnTime = 0;
+				}
+				
+				m_nRespawnTime++;
+				Entity::Render(GL_LINE_LOOP, m_ships[m_currentIndex], Engine::Math::Vector3(1.0f, 0.0f, 0.0f));
+
+				return;
+			}
+			
+			// Draw ship
+			Entity::Render(GL_LINE_LOOP, m_ships[m_currentIndex]);				
+		}
+
+		void Ship::Respawn()
+		{
+			SetCollision(false);
+			m_transforms->Teleport(0.0f, 0.0f);
+			m_transforms->ResetOrientation();
+			m_physics->SetVelocity(Engine::Math::Vector2(0.f, 0.f));
 		}
 
 		void Ship::CalculateMass()

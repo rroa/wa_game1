@@ -23,6 +23,7 @@ namespace Engine
 			void Teleport(Math::Vector2 newPosition);
 			void RotateInDegrees(float angle);
 			void RotateInRadians(float angle);
+			void ResetOrientation();
 
 			/* =============================================================
 			* GETTER FUNCTIONS
