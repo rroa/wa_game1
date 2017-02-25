@@ -18,7 +18,7 @@ namespace  Asteroids
 			// Apply initial transforms
 			//
 			m_transforms->Teleport(position);
-			m_transforms->RotateInDegrees(angle);
+			//m_transforms->RotateInDegrees(angle);
 
 			// Attaching transformation component
 			//
