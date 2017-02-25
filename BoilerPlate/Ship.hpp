@@ -8,6 +8,7 @@
 //
 #include "Vector2.hpp"
 #include "Entity.hpp"
+#include "Bullet.hpp"
 
 typedef std::vector<Engine::Math::Vector2> points_set;
 
@@ -34,11 +35,7 @@ namespace Asteroids
 			void Update(float deltaTime) override;
 			void Render() override;
 			void Respawn();
-
-			/* =============================================================
-			* GETTER FUNCTIONS
-			* ============================================================= */
-			Engine::Math::Vector2 GetPosition() const { return m_transforms->GetPosition(); };
+			Bullet* Shoot();
 		private:
 			void CalculateMass();
 			/* =============================================================

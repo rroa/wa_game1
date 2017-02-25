@@ -44,7 +44,7 @@ namespace Asteroids
 
 		// Adding the enemies (asteroids)
 		//
-		CreateAsteroids(10, Entities::Asteroid::AsteroidSize::BIG);
+		//CreateAsteroids(10, Entities::Asteroid::AsteroidSize::BIG);
 	}
 
 	void Game::Update(float delta) const
@@ -89,6 +89,11 @@ namespace Asteroids
 		if (Engine::Input::InputManager::Instance().IsKeyReleased('p'))
 		{
 			m_player->ChangeShip();
+		}
+
+		if (Engine::Input::InputManager::Instance().IsKeyReleased(' '))
+		{
+			m_scene->AddChild(m_player->Shoot());
 		}
 	}
 

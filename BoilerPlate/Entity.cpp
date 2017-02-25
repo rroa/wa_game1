@@ -7,7 +7,6 @@
 #include "Scene.hpp"
 #include "RigidBodyComponent.hpp"
 #include "TransformationComponent.hpp"
-#include "Constants.hpp"
 
 namespace Asteroids
 {

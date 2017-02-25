@@ -12,6 +12,7 @@ namespace Asteroids
 		const float ANGLE_OFFSET = 90.0f;
 		const float THRUST = 3.0f;
 		const float MAX_SPEED = 350.0f;
+		const float BULLET_SPEED = 250.f;
 		const float ROTATION_SPEED = 5.0f;
 		const int RESTART_BLINK_FRAME_TIME = 30;
 		const int RESPAWN_TIME = 120;
@@ -101,17 +102,17 @@ namespace Asteroids
 		{
 			// Clamp speed
 			//
-			float speed = fabs(m_physics->GetSpeed());
-			if (speed > MAX_SPEED)
+			m_currentSpeed = fabs(m_physics->GetSpeed());
+			if (m_currentSpeed > MAX_SPEED)
 			{
 				m_physics->SetVelocity(
 					Engine::Math::Vector2(
-					(m_physics->GetVelocity().x / speed) * MAX_SPEED,
-						(m_physics->GetVelocity().y / speed) * MAX_SPEED
+					(m_physics->GetVelocity().x / m_currentSpeed) * MAX_SPEED,
+						(m_physics->GetVelocity().y / m_currentSpeed) * MAX_SPEED
 					)
 				);
 
-				m_currentSpeed = fabs(m_physics->GetVelocity().Length());
+				m_currentSpeed = MAX_SPEED;
 			}
 
 			Entity::Update(deltaTime);
@@ -161,6 +162,23 @@ namespace Asteroids
 			m_transforms->Teleport(0.0f, 0.0f);
 			m_transforms->ResetOrientation();
 			m_physics->SetVelocity(Engine::Math::Vector2(0.f, 0.f));
+		}
+
+		Bullet * Ship::Shoot()
+		{
+			float shootingAngle = m_transforms->GetAngleInDegrees() + ANGLE_OFFSET;
+
+			float x = m_transforms->GetPosition().x + m_ships[m_currentIndex][1].x;
+			float y = m_transforms->GetPosition().y + m_ships[m_currentIndex][1].y;
+
+			float vx = m_currentSpeed + BULLET_SPEED;
+			float vy = m_currentSpeed + BULLET_SPEED;
+
+			return new Bullet(
+				Engine::Math::Vector2(x, y), 
+				Engine::Math::Vector2(vx, vy), 
+				shootingAngle
+			);
 		}
 
 		void Ship::CalculateMass()
