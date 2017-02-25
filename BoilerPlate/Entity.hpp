@@ -30,6 +30,7 @@ namespace Asteroids
 			void Update(float delta) override;
 			void Render(unsigned int mode, std::vector<Engine::Math::Vector2> points, Engine::Math::Vector3 color = Engine::Math::Vector3(1.0));
 			
+			// TODO: RR: Move out to rigid body component
 			//
 			bool IsColliding(Entity* rhs) const;
 			bool CanCollide() const { return m_canCollide; }
@@ -37,8 +38,8 @@ namespace Asteroids
 		protected:
 			Engine::Components::TransformationComponent* m_transforms;
 			Engine::Components::RigidBodyComponent* m_physics;
-			float m_radius;
-			bool m_canCollide;
+			float m_radius; // TODO: RR: Move this to rigid body component
+			bool m_canCollide; // TODO: RR: Move this to rigid body component
 		private:
 			float m_halfWidth;
 			float m_halfHeight;			

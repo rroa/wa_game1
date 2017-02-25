@@ -25,7 +25,6 @@ namespace Asteroids
 			, m_totalPulseCount(30)
 			, m_currentColor(Engine::Math::Vector3(1.0f))
 		{
-
 			m_radius = 10.0f;
 
 			// Transforms
