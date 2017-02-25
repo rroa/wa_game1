@@ -19,14 +19,19 @@ namespace Asteroids
 		const float MAX_SIZE = 45.0f;
 		const float ROTATION_SPEED = 120.0f;
 
-		Asteroid::Asteroid(AsteroidSize::Size size)
+		Asteroid::Asteroid(AsteroidSize::Size size, Engine::Math::Vector2 position)
 			: m_size(size)
 		{
+			if (size == AsteroidSize::BIG) m_radius = 40.f;
+			if (size == AsteroidSize::MEDIUM) m_radius = 20.f;
+			if (size == AsteroidSize::SMALL) m_radius = 10.f;
+
 			m_sizeFactor = static_cast<int>(size) + 1;
 
 			// Transforms
 			//
 			m_transforms = new Engine::Components::TransformationComponent();
+			m_transforms->Teleport(position);
 
 			// Attaching transformation component
 			//
@@ -47,6 +52,7 @@ namespace Asteroids
 
 			//
 			Generate();
+
 			ApplyRandomImpulse();
 		}
 
@@ -104,13 +110,13 @@ namespace Asteroids
 			dimensions[0] = (scene->GetWidth() / 2.0f);
 			dimensions[1] = (scene->GetHeight() / 2.0f);
 
-			const int sideAxis = rand() & 1;
-			const float sideDir = (rand() & 1) ? 1.0f : -1.0f;
+			const int sideAxis = Engine::Math::DieRoll() & 1;
+			const float sideDir = (Engine::Math::DieRoll() & 1) ? 1.0f : -1.0f;
 
 			const int otherSideAxis = (sideAxis + 1) & 1;
 
 			float point[2];
-			point[sideAxis] = sideDir * dimensions[sideAxis];
+			point[sideAxis] = sideDir * Engine::Math::RandomInRange<float>(dimensions[sideAxis] * -1.0f, dimensions[sideAxis]);
 			point[otherSideAxis] = Engine::Math::RandomInRange<float>(dimensions[otherSideAxis] * -1.0f, dimensions[otherSideAxis]);
 
 			m_transforms->Teleport(point[0], point[1]);

@@ -13,11 +13,20 @@ namespace Asteroids
 		const float THRUST = 3.0f;
 		const float MAX_SPEED = 350.0f;
 		const float ROTATION_SPEED = 5.0f;
+		const int RESTART_BLINK_FRAME_TIME = 30;
+		const int RESPAWN_TIME = 120;
 
-		Ship::Ship(const std::vector<models> points)
+		Ship::Ship(const std::vector<points_set> points)
 			: m_ships(points)
 			, m_currentIndex(0)
+			, m_nRespawnTime(0)
+			, m_pulse(false)
+			, m_currentPulseCount(0)
+			, m_totalPulseCount(30)
+			, m_currentColor(Engine::Math::Vector3(1.0f))
 		{
+			m_radius = 10.0f;
+
 			// Transforms
 			//
 			m_transforms = new Engine::Components::TransformationComponent();
@@ -34,7 +43,7 @@ namespace Asteroids
 				1.0f,
 				0.999f
 			);
-			
+
 			// Attaching physics component
 			//
 			AttachComponent(m_physics);
@@ -48,7 +57,7 @@ namespace Asteroids
 		{
 			// Clear points allocation per model
 			//
-			for(auto model : m_ships)
+			for (auto model : m_ships)
 			{
 				model.clear();
 			}
@@ -56,17 +65,13 @@ namespace Asteroids
 			// Clear ships collection
 			//
 			m_ships.clear();
-
-			// Destroying base
-			//
-			Entity::~Entity();
 		}
 
 
 		void Ship::MoveUp() const
-		{			
+		{
 			m_physics->ApplyForce(
-				Engine::Math::Vector2(THRUST), 
+				Engine::Math::Vector2(THRUST),
 				m_transforms->GetAngleIRadians() + Engine::Math::DegreesToRadians(ANGLE_OFFSET)
 			);
 		}
@@ -96,12 +101,12 @@ namespace Asteroids
 		{
 			// Clamp speed
 			//
-			float speed = fabs(m_physics->GetVelocity().Length());
+			float speed = fabs(m_physics->GetSpeed());
 			if (speed > MAX_SPEED)
 			{
 				m_physics->SetVelocity(
 					Engine::Math::Vector2(
-						(m_physics->GetVelocity().x / speed) * MAX_SPEED,
+					(m_physics->GetVelocity().x / speed) * MAX_SPEED,
 						(m_physics->GetVelocity().y / speed) * MAX_SPEED
 					)
 				);
@@ -114,7 +119,48 @@ namespace Asteroids
 
 		void Ship::Render()
 		{
-			Entity::Render(GL_LINE_LOOP, m_ships[m_currentIndex]);
+			if (!m_canCollide)
+			{
+				if (m_nRespawnTime >= RESPAWN_TIME)
+				{
+					SetCollision(true);
+					m_nRespawnTime = 0;
+					m_pulse = false;
+					m_currentColor = Engine::Math::Vector3(1.0f);
+				}
+
+				m_nRespawnTime++;
+
+				if (m_pulse)
+				{
+					// Pulsing, skip draw frames for a small amount of time
+					if (m_totalPulseCount > m_currentPulseCount)
+					{
+						m_currentPulseCount++;
+						return;
+					}
+
+					// Pulsing, reset pulse after a small amount of time
+					// this will allow for blinking to be spaced and smooth
+					if (m_nUpdates % RESTART_BLINK_FRAME_TIME == 0)
+					{
+						m_currentPulseCount = 0;
+					}
+				}
+			}
+
+			// Draw ship
+			Entity::Render(GL_LINE_LOOP, m_ships[m_currentIndex], m_currentColor);
+		}
+
+		void Ship::Respawn()
+		{
+			SetCollision(false);
+			m_pulse = true;
+			m_currentColor = Engine::Math::Vector3(1.0f, 0.0f, 0.0f);
+			m_transforms->Teleport(0.0f, 0.0f);
+			m_transforms->ResetOrientation();
+			m_physics->SetVelocity(Engine::Math::Vector2(0.f, 0.f));
 		}
 
 		void Ship::CalculateMass()

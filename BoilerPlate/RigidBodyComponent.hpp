@@ -35,6 +35,7 @@ namespace Engine
 			* GETTER FUNCTIONS
 			* ============================================================= */
 			float GetMass() const { return m_mass; }
+			float GetSpeed() const { return m_velocity.Length(); }
 			Math::Vector2 GetVelocity() const { return m_velocity; }
 		protected:
 			/* =============================================================

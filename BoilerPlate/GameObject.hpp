@@ -39,6 +39,7 @@ namespace Engine
 			* GETTER FUNCTIONS
 			* ============================================================= */
 			std::vector<Component*>GetComponents() const { return m_components; }
+			std::vector<GameObject*> GetChildren() const { return m_children; }
 			GameObject* GetParent() const { return m_parent; }
 
 			template<typename T>

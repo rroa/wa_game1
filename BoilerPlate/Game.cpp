@@ -44,7 +44,7 @@ namespace Asteroids
 
 		// Adding the enemies (asteroids)
 		//
-		CreateAsteroids(10);
+		CreateAsteroids(10, Entities::Asteroid::AsteroidSize::BIG);
 	}
 
 	void Game::Update(float delta) const
@@ -56,6 +56,10 @@ namespace Asteroids
 		// Update the scene
 		//
 		m_scene->Update(delta);
+
+		// Look for collisions
+		//
+		CheckCollisions();
 	}
 
 	void Game::Render() const
@@ -100,21 +104,66 @@ namespace Asteroids
 		m_scene->AddChild(m_player);
 	}
 
-	void Game::CreateAsteroids(int amount) const
+	void Game::CreateAsteroids(int amount, Entities::Asteroid::AsteroidSize::Size size, Engine::Math::Vector2 position) const
 	{
 		for (int i = 0; i < amount; ++i)
 		{
 			// Create new Asteroid
 			Entities::Asteroid* pAsteroid =
-				new Entities::Asteroid(Entities::Asteroid::AsteroidSize::BIG);
+				new Entities::Asteroid(size, position);
 
 			// Add asteroid to the scene
 			//
 			m_scene->AddChild(pAsteroid);
 
-			// Apply random translation to the new asteroid
-			//
-			pAsteroid->ApplyRandomTranslation();
+			// If set on origin then move randomly around the 'world'
+			if (position == Engine::Math::Vector2::Origin)
+			{
+				pAsteroid->ApplyRandomTranslation();
+			}
+		}
+	}
+
+	void Game::CreateDebris(Entities::Asteroid::AsteroidSize::Size previousSize, Engine::Math::Vector2 position) const
+	{
+		if(previousSize == Entities::Asteroid::AsteroidSize::BIG)
+		{
+			CreateAsteroids(2, Entities::Asteroid::AsteroidSize::MEDIUM, position);
+		}
+
+		if (previousSize == Entities::Asteroid::AsteroidSize::MEDIUM)
+		{
+			CreateAsteroids(2, Entities::Asteroid::AsteroidSize::SMALL, position);
+		}
+	}
+
+	void Game::CheckCollisions() const
+	{
+		if (!m_player->CanCollide()) return;
+
+		for(auto a :  m_scene->GetChildren())
+		{
+			Entities::Asteroid* pAsteroid = dynamic_cast<Entities::Asteroid*>(a);
+			if (pAsteroid)
+			{
+				if(m_player->IsColliding(pAsteroid))
+				{
+					// Retrieve current size
+					//
+					Entities::Asteroid::AsteroidSize::Size currentSize = pAsteroid->GetSize();
+					
+					// Remove from scene
+					//
+					m_scene->RemoveChild(a);
+
+					// Create debris
+					//
+					CreateDebris(currentSize, m_player->GetPosition());
+
+					//
+					m_player->Respawn();
+				}
+			}
 		}
 	}
 }

@@ -9,7 +9,7 @@
 #include "Vector2.hpp"
 #include "Entity.hpp"
 
-typedef std::vector<Engine::Math::Vector2> models;
+typedef std::vector<Engine::Math::Vector2> points_set;
 
 namespace Asteroids
 {
@@ -21,7 +21,7 @@ namespace Asteroids
 			/* =============================================================
 			* CTOR
 			* ============================================================= */
-			Ship(const std::vector<models> ships);
+			explicit Ship(const std::vector<points_set> ships);
 			~Ship();
 
 			/* =============================================================
@@ -33,14 +33,25 @@ namespace Asteroids
 			void ChangeShip();
 			void Update(float deltaTime) override;
 			void Render() override;
+			void Respawn();
+
+			/* =============================================================
+			* GETTER FUNCTIONS
+			* ============================================================= */
+			Engine::Math::Vector2 GetPosition() const { return m_transforms->GetPosition(); };
 		private:
 			void CalculateMass();
 			/* =============================================================
 			* MEMBERS
 			* ============================================================= */
-			std::vector<models> m_ships;
+			std::vector<points_set> m_ships;
 			float m_currentSpeed;
 			int	m_currentIndex;
+			int m_nRespawnTime;
+			bool m_pulse = false;
+			int  m_currentPulseCount;
+			int  m_totalPulseCount;
+			Engine::Math::Vector3 m_currentColor;
 		};
 	}
 }

@@ -5,6 +5,7 @@
 
 #include "Scene.hpp"
 #include "Ship.hpp"
+#include "Asteroid.hpp"
 
 namespace Asteroids
 {
@@ -29,7 +30,9 @@ namespace Asteroids
 		* ============================================================= */
 		void HandleInput() const;
 		void CreatePlayer();
-		void CreateAsteroids(int amount) const;
+		void CreateAsteroids(int amount, Entities::Asteroid::AsteroidSize::Size size, Engine::Math::Vector2 position = Engine::Math::Vector2::Origin) const;
+		void CreateDebris(Entities::Asteroid::AsteroidSize::Size previousSize, Engine::Math::Vector2 position) const;
+		void CheckCollisions() const;
 
 		/* =============================================================
 		* MEMBERS

@@ -43,5 +43,11 @@ namespace Engine
 			m_angleInRadians = angle;
 			m_angleInDegrees = angle * (180 / Math::PI);
 		}
+
+		void TransformationComponent::ResetOrientation()
+		{
+			m_angleInDegrees = 0;
+			m_angleInRadians = 0;
+		}
 	}
 }

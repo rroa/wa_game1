@@ -13,6 +13,13 @@ namespace Engine
 		    , length(0)
 		{}
 
+		Vector3::Vector3(float uniform)
+			: x(uniform)
+			, y(uniform)
+			, z(uniform)
+			, length(0)
+		{}
+
 		Vector3::Vector3(float _x, float _y, float _z)
 			: x(_x)
 			, y(_y)
