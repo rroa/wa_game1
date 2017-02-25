@@ -30,8 +30,8 @@ namespace Asteroids
 		* ============================================================= */
 		void HandleInput() const;
 		void CreatePlayer();
-		void CreateAsteroids(int amount, Entities::Asteroid::AsteroidSize::Size size) const;
-		void CreateDebris(Entities::Asteroid::AsteroidSize::Size previousSize) const;
+		void CreateAsteroids(int amount, Entities::Asteroid::AsteroidSize::Size size, Engine::Math::Vector2 position = Engine::Math::Vector2::Origin) const;
+		void CreateDebris(Entities::Asteroid::AsteroidSize::Size previousSize, Engine::Math::Vector2 position) const;
 		void CheckCollisions() const;
 
 		/* =============================================================

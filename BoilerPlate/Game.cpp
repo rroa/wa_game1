@@ -44,7 +44,7 @@ namespace Asteroids
 
 		// Adding the enemies (asteroids)
 		//
-		CreateAsteroids(1, Entities::Asteroid::AsteroidSize::BIG);
+		CreateAsteroids(10, Entities::Asteroid::AsteroidSize::BIG);
 	}
 
 	void Game::Update(float delta) const
@@ -104,34 +104,36 @@ namespace Asteroids
 		m_scene->AddChild(m_player);
 	}
 
-	void Game::CreateAsteroids(int amount, Entities::Asteroid::AsteroidSize::Size size) const
+	void Game::CreateAsteroids(int amount, Entities::Asteroid::AsteroidSize::Size size, Engine::Math::Vector2 position) const
 	{
 		for (int i = 0; i < amount; ++i)
 		{
 			// Create new Asteroid
 			Entities::Asteroid* pAsteroid =
-				new Entities::Asteroid(size);
+				new Entities::Asteroid(size, position);
 
 			// Add asteroid to the scene
 			//
 			m_scene->AddChild(pAsteroid);
 
-			// Apply random translation to the new asteroid
-			//
-			pAsteroid->ApplyRandomTranslation();
+			// If set on origin then move randomly around the 'world'
+			if (position == Engine::Math::Vector2::Origin)
+			{
+				pAsteroid->ApplyRandomTranslation();
+			}
 		}
 	}
 
-	void Game::CreateDebris(Entities::Asteroid::AsteroidSize::Size previousSize) const
+	void Game::CreateDebris(Entities::Asteroid::AsteroidSize::Size previousSize, Engine::Math::Vector2 position) const
 	{
 		if(previousSize == Entities::Asteroid::AsteroidSize::BIG)
 		{
-			CreateAsteroids(2, Entities::Asteroid::AsteroidSize::MEDIUM);
+			CreateAsteroids(2, Entities::Asteroid::AsteroidSize::MEDIUM, position);
 		}
 
 		if (previousSize == Entities::Asteroid::AsteroidSize::MEDIUM)
 		{
-			CreateAsteroids(2, Entities::Asteroid::AsteroidSize::SMALL);
+			CreateAsteroids(2, Entities::Asteroid::AsteroidSize::SMALL, position);
 		}
 	}
 
@@ -156,48 +158,12 @@ namespace Asteroids
 
 					// Create debris
 					//
-					CreateDebris(currentSize);
+					CreateDebris(currentSize, m_player->GetPosition());
 
 					//
 					m_player->Respawn();
 				}
 			}
 		}
-
-		/* =============================================================
-		* ENUMERATORS
-		* ============================================================= */
-		/*struct EntityState
-		{
-			enum State
-			{
-				NORMAL = 0,
-				COLLIDED = 1,
-				DELETED = 2,
-			};
-		};*/
-		//inline bool CouldCollide    ( ) { return m_state == EntityState::State::NORMAL; }
-		/*for (std::list< Asteroids::Asteroid* >::iterator asteroid = m_asteroids.begin(); asteroid != m_asteroids.end(); ++asteroid)
-		{
-			if ((*asteroid)->CouldCollide() && m_player->CouldCollide())
-			{
-				if (m_player->DetectCollision((*asteroid)))
-				{
-					CreateDebris((*asteroid));
-				}
-
-				for (std::list< Asteroids::Bullet* >::iterator bullet = m_bullets.begin(); bullet != m_bullets.end(); ++bullet)
-				{
-					if ((*bullet)->CouldCollide() && (*asteroid)->CouldCollide())
-					{
-						if ((*asteroid)->DetectCollision((*bullet)))
-						{
-							UpdateScore(10);
-							CreateDebris((*asteroid));
-						}
-					}
-				}
-			}
-		}*/
 	}
 }
