@@ -8,7 +8,9 @@ namespace  Asteroids
 {
 	namespace Entities
 	{
-		Bullet::Bullet(Engine::Math::Vector2 position, Engine::Math::Vector2 velocity, float angle)
+		Bullet::Bullet(Engine::Math::Vector2 position, Engine::Math::Vector2 velocity, float angle, unsigned int maxFrameLifeTime)
+			: m_frameLifeTime(0)
+			, m_maxFrameLifeTime(maxFrameLifeTime)
 		{
 			m_radius = 1.0f;
 
@@ -41,6 +43,23 @@ namespace  Asteroids
 				velocity, 
 				Engine::Math::DegreesToRadians(angle)
 			);
+		}
+
+		void Bullet::Update(double deltaTime)
+		{
+			if(m_frameLifeTime > m_maxFrameLifeTime)
+			{
+				m_state = EntityState::DELETED;
+				return;
+			}
+
+			// Update frame lifetime
+			//
+			m_frameLifeTime++;
+
+			// Call update on base class
+			//
+			Entity::Update(deltaTime);
 		}
 
 		void Bullet::Render()

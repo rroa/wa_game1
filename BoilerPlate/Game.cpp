@@ -25,7 +25,7 @@ namespace Asteroids
 
 		// Clear list
 		//
-		m_ships.clear();
+		m_bullets.clear();
 	}
 
 	void Game::Init()
@@ -49,10 +49,6 @@ namespace Asteroids
 
 	void Game::Update(double deltaTime) const
 	{
-		// Handle Input
-		//
-		HandleInput();
-
 		// Update the scene
 		//
 		m_scene->Update(deltaTime);
@@ -69,7 +65,7 @@ namespace Asteroids
 		m_scene->Render();
 	}
 
-	void Game::HandleInput() const
+	void Game::HandleInput()
 	{
 		if (Engine::Input::InputManager::Instance().IsKeyPressed('w'))
 		{
@@ -93,7 +89,9 @@ namespace Asteroids
 
 		if (Engine::Input::InputManager::Instance().IsKeyReleased(' '))
 		{
-			m_scene->AddChild(m_player->Shoot());
+			Entities::Bullet* pBullet = m_player->Shoot();
+			m_bullets.push_back(pBullet);
+			m_scene->AddChild(pBullet);
 		}
 	}
 
@@ -151,23 +149,49 @@ namespace Asteroids
 			Entities::Asteroid* pAsteroid = dynamic_cast<Entities::Asteroid*>(a);
 			if (pAsteroid)
 			{
-				if(m_player->IsColliding(pAsteroid))
-				{
-					// Retrieve current size
-					//
-					Entities::Asteroid::AsteroidSize::Size currentSize = pAsteroid->GetSize();
-					
-					// Remove from scene
-					//
-					m_scene->RemoveChild(a);
+				CheckCollisionWithPlayer(pAsteroid);
+			}
+		}
+	}
 
-					// Create debris
-					//
-					CreateDebris(currentSize, m_player->GetPosition());
+	void Game::CheckCollisionWithPlayer(Entities::Asteroid * pAsteroid) const
+	{
+		if (m_player->IsColliding(pAsteroid))
+		{
+			// Retrieve current size
+			//
+			Entities::Asteroid::AsteroidSize::Size currentSize = pAsteroid->GetSize();
 
-					//
-					m_player->Respawn();
-				}
+			// Remove from scene
+			//
+			m_scene->RemoveChild(pAsteroid);
+
+			// Create debris
+			//
+			CreateDebris(currentSize, m_player->GetPosition());
+
+			//
+			m_player->Respawn();
+		}
+	}
+
+	void Game::CheckCollisionWithBullets(Entities::Asteroid * pAsteroid)
+	{
+		for(auto bullet : m_bullets)
+		{
+			if(bullet->IsColliding(pAsteroid))
+			{
+				// Retrieve current size
+				//
+				Entities::Asteroid::AsteroidSize::Size currentSize = pAsteroid->GetSize();
+
+				// Remove from scene
+				//
+				m_scene->RemoveChild(pAsteroid);
+
+				// Create debris
+				//
+				CreateDebris(currentSize, m_player->GetPosition());
 			}
 		}
 	}

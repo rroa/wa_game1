@@ -45,7 +45,7 @@ namespace Asteroids
 			
 			// TODO: RR: Move out to rigid body component
 			//
-			bool IsColliding(Entity* rhs) const;
+			bool IsColliding(Entity* rhs);
 			bool CanCollide() const { return m_canCollide; }
 			void SetCollision(bool canCollide) { m_canCollide = canCollide; }
 
@@ -59,14 +59,15 @@ namespace Asteroids
 			* ============================================================= */
 			Engine::Components::TransformationComponent* m_transforms;
 			Engine::Components::RigidBodyComponent* m_physics;
+			EntityState::State m_state;
 			float m_radius; // TODO: RR: Move this to rigid body component
 			bool m_canCollide; // TODO: RR: Move this to rigid body component
 		private:
 			/* =============================================================
 			* PRIVATE MEMBERS
 			* ============================================================= */
-			float m_halfWidth;
-			float m_halfHeight;			
+			float m_sceneHalfWidth;
+			float m_sceneHalfHeight;
 		};
 	}
 }

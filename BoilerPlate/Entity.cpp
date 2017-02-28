@@ -32,8 +32,9 @@ namespace Asteroids
 			, m_physics(nullptr)
 			, m_radius(0)
 			, m_canCollide(false)
-			, m_halfWidth(0)
-			, m_halfHeight(0)
+			, m_sceneHalfWidth(0)
+			, m_sceneHalfHeight(0)
+			, m_state(EntityState::NORMAL)
 		{}
 
 		void Entity::Update(double deltaTime)
@@ -43,8 +44,8 @@ namespace Asteroids
 			Scene* scene = dynamic_cast<Scene*>(GetParent());
 			if (!scene) return;
 
-			m_halfWidth = (scene->GetWidth() / 2.0f);
-			m_halfHeight = (scene->GetHeight() / 2.0f);
+			m_sceneHalfWidth = (scene->GetWidth() / 2.0f);
+			m_sceneHalfHeight = (scene->GetHeight() / 2.0f);
 
 			if (!m_physics || !m_transforms) return;
 
@@ -57,11 +58,11 @@ namespace Asteroids
 
 			// Getting axis limits
 			//
-			float worldMinX = -m_halfWidth;
-			float worldMaxX = m_halfWidth;
+			float worldMinX = -m_sceneHalfWidth;
+			float worldMaxX = m_sceneHalfWidth;
 
-			float worldMinY = -m_halfHeight;
-			float worldMaxY = m_halfHeight;
+			float worldMinY = -m_sceneHalfHeight;
+			float worldMaxY = m_sceneHalfHeight;
 
 			// Wrap!
 			float x = wrap(newPos.x, worldMinX, worldMaxX);
@@ -125,8 +126,10 @@ namespace Asteroids
 			GameObject::Render();
 		}
 
-		bool Entity::IsColliding(Entity * rhs) const
+		bool Entity::IsColliding(Entity * rhs)
 		{
+			// TODO: RR: Move this check out to the rigid body component
+			//
 			Engine::Components::TransformationComponent* t_rhs = 
 				rhs->GetComponent<Engine::Components::TransformationComponent>();
 
@@ -138,7 +141,13 @@ namespace Asteroids
 			float radii = m_radius + rhs->m_radius;
 			float distSquared = x * x + y * y;
 				
-			return radii * radii >= distSquared;
+			bool intersects = radii * radii >= distSquared;
+
+			// Update entity state
+			//
+			if (intersects) m_state = EntityState::COLLIDED;
+
+			return intersects;
 		}
 	}
 }
