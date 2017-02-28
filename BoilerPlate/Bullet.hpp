@@ -22,7 +22,6 @@ namespace  Asteroids
 			* ============================================================= */
 			void Update(double deltaTime) override;
 			void Render() override;
-
 		private:
 			/* =============================================================
 			* MEMBERS

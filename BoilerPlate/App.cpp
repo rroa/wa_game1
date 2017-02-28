@@ -127,9 +127,8 @@ namespace Application
 	{
 		double startTime = m_timer->GetElapsedTimeInSeconds();
 
-		// Handle Input & Update the game!
+		// Update the game!
 		//
-		m_game->HandleInput();
 		m_game->Update(m_deltaTime);
 
 		double endTime = m_timer->GetElapsedTimeInSeconds();

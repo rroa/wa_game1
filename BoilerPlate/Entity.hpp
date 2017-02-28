@@ -29,6 +29,7 @@ namespace Asteroids
 					NORMAL = 0,
 					COLLIDED = 1,
 					DELETED = 2,
+					RESPAWNING = 3
 				};
 			};
 
@@ -45,14 +46,17 @@ namespace Asteroids
 			
 			// TODO: RR: Move out to rigid body component
 			//
-			bool IsColliding(Entity* rhs);
+			bool IntersectsWith(Entity* rhs);
 			bool CanCollide() const { return m_canCollide; }
 			void SetCollision(bool canCollide) { m_canCollide = canCollide; }
 
 			/* =============================================================
 			* GETTER FUNCTIONS
 			* ============================================================= */
-			Engine::Math::Vector2 GetPosition() const { return m_transforms->GetPosition(); };
+			Engine::Math::Vector2 GetPosition() const { return m_transforms->GetPosition(); }
+			bool ShouldBeDeleted() const { return m_state == EntityState::State::DELETED; }
+			bool IsColliding() const { return m_state == EntityState::State::COLLIDED; }
+			bool IsRespawning() const { return m_state == EntityState::State::RESPAWNING; }
 		protected:
 			/* =============================================================
 			* PROTECTED MEMBERS

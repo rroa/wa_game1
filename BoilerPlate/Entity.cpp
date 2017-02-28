@@ -126,7 +126,7 @@ namespace Asteroids
 			GameObject::Render();
 		}
 
-		bool Entity::IsColliding(Entity * rhs)
+		bool Entity::IntersectsWith(Entity * rhs)
 		{
 			// TODO: RR: Move this check out to the rigid body component
 			//
@@ -134,6 +134,7 @@ namespace Asteroids
 				rhs->GetComponent<Engine::Components::TransformationComponent>();
 
 			if (!rhs) return false;
+			if (!t_rhs) return false;
 
 			float x = m_transforms->GetPosition().x - t_rhs->GetPosition().x;
 			float y = m_transforms->GetPosition().y - t_rhs->GetPosition().y;

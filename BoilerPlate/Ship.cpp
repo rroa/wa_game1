@@ -126,6 +126,7 @@ namespace Asteroids
 				if (m_nRespawnTime >= RESPAWN_TIME)
 				{
 					SetCollision(true);
+					m_state = EntityState::NORMAL;
 					m_nRespawnTime = 0;
 					m_pulse = false;
 					m_currentColor = Engine::Math::Vector3(1.0f);
@@ -163,6 +164,7 @@ namespace Asteroids
 			m_transforms->Teleport(0.0f, 0.0f);
 			m_transforms->ResetOrientation();
 			m_physics->SetVelocity(Engine::Math::Vector2(0.f, 0.f));
+			m_state = EntityState::RESPAWNING;
 		}
 
 		Bullet * Ship::Shoot() const

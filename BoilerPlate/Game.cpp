@@ -2,6 +2,7 @@
 
 //
 #include <iostream>
+#include <algorithm>
 
 //
 #include "Configuration.hpp"
@@ -44,11 +45,15 @@ namespace Asteroids
 
 		// Adding the enemies (asteroids)
 		//
-		//CreateAsteroids(10, Entities::Asteroid::AsteroidSize::BIG);
+		CreateAsteroids(10, Entities::Asteroid::AsteroidSize::BIG);
 	}
 
-	void Game::Update(double deltaTime) const
+	void Game::Update(double deltaTime)
 	{
+		// Handle Input
+		//
+		HandleInput();
+
 		// Update the scene
 		//
 		m_scene->Update(deltaTime);
@@ -56,6 +61,10 @@ namespace Asteroids
 		// Look for collisions
 		//
 		CheckCollisions();
+
+		// Clean up dead bullets
+		//
+		CleanDeadUpBullets();
 	}
 
 	void Game::Render() const
@@ -89,8 +98,20 @@ namespace Asteroids
 
 		if (Engine::Input::InputManager::Instance().IsKeyReleased(' '))
 		{
+			// If ship is respawning ignore shoot command
+			//
+			if (m_player->IsRespawning()) return;
+
+			// Shoot!
+			//
 			Entities::Bullet* pBullet = m_player->Shoot();
+
+			// Store bullets in linked list
+			//
 			m_bullets.push_back(pBullet);
+
+			// Add bullet to the scene
+			//
 			m_scene->AddChild(pBullet);
 		}
 	}
@@ -127,20 +148,44 @@ namespace Asteroids
 		}
 	}
 
-	void Game::CreateDebris(Entities::Asteroid::AsteroidSize::Size previousSize, Engine::Math::Vector2 position) const
+	void Game::CreateDebris(Entities::Asteroid* currentAsteroid) const
 	{
-		if(previousSize == Entities::Asteroid::AsteroidSize::BIG)
+		// Retrieve current size
+		//
+		Entities::Asteroid::AsteroidSize::Size currentSize = currentAsteroid->GetSize();
+
+		// Create resulting asteroids from collision depending on current asteroid size
+		//
+		if(currentSize == Entities::Asteroid::AsteroidSize::BIG)
 		{
-			CreateAsteroids(2, Entities::Asteroid::AsteroidSize::MEDIUM, position);
+			CreateAsteroids(2, Entities::Asteroid::AsteroidSize::MEDIUM, currentAsteroid->GetPosition());
 		}
 
-		if (previousSize == Entities::Asteroid::AsteroidSize::MEDIUM)
+		if (currentSize == Entities::Asteroid::AsteroidSize::MEDIUM)
 		{
-			CreateAsteroids(2, Entities::Asteroid::AsteroidSize::SMALL, position);
+			CreateAsteroids(2, Entities::Asteroid::AsteroidSize::SMALL, currentAsteroid->GetPosition());
+		}
+
+		// Remove from scene
+		//
+		m_scene->RemoveChild(currentAsteroid);
+	}
+
+	void Game::CleanDeadUpBullets()
+	{
+		if (m_bullets.size() == 0) return;
+
+		// Destroy one per update
+		//
+		auto iter = std::find_if(m_bullets.begin(), m_bullets.end(),
+			[&](Entities::Bullet* bullet) { return bullet->ShouldBeDeleted() || bullet->IsColliding(); });
+		if (iter != m_bullets.end())
+		{
+			DestroyBullet(*iter);
 		}
 	}
 
-	void Game::CheckCollisions() const
+	void Game::CheckCollisions()
 	{
 		if (!m_player->CanCollide()) return;
 
@@ -150,25 +195,18 @@ namespace Asteroids
 			if (pAsteroid)
 			{
 				CheckCollisionWithPlayer(pAsteroid);
+				CheckCollisionWithBullets(pAsteroid);
 			}
 		}
 	}
 
 	void Game::CheckCollisionWithPlayer(Entities::Asteroid * pAsteroid) const
 	{
-		if (m_player->IsColliding(pAsteroid))
+		if (m_player->IntersectsWith(pAsteroid))
 		{
-			// Retrieve current size
-			//
-			Entities::Asteroid::AsteroidSize::Size currentSize = pAsteroid->GetSize();
-
-			// Remove from scene
-			//
-			m_scene->RemoveChild(pAsteroid);
-
 			// Create debris
 			//
-			CreateDebris(currentSize, m_player->GetPosition());
+			CreateDebris(pAsteroid);
 
 			//
 			m_player->Respawn();
@@ -179,20 +217,27 @@ namespace Asteroids
 	{
 		for(auto bullet : m_bullets)
 		{
-			if(bullet->IsColliding(pAsteroid))
+			if(bullet->IntersectsWith(pAsteroid))
 			{
-				// Retrieve current size
-				//
-				Entities::Asteroid::AsteroidSize::Size currentSize = pAsteroid->GetSize();
-
-				// Remove from scene
-				//
-				m_scene->RemoveChild(pAsteroid);
-
 				// Create debris
 				//
-				CreateDebris(currentSize, m_player->GetPosition());
+				CreateDebris(pAsteroid);
 			}
+		}
+	}
+
+	void Game::DestroyBullet(Entities::Bullet * bulletToDestroy)
+	{
+		// Remove bullet from the scene
+		//
+		m_scene->RemoveChild(bulletToDestroy);
+
+		// Remove bullet from list
+		//
+		auto bulletResult = find(m_bullets.begin(), m_bullets.end(), bulletToDestroy);
+		if (m_bullets.size() > 0 && bulletResult != m_bullets.end())
+		{
+			m_bullets.erase(bulletResult);
 		}
 	}
 }

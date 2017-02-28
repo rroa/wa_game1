@@ -3,7 +3,7 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
-#include <vector>
+#include <list>
 
 #include "Scene.hpp"
 #include "Ship.hpp"
@@ -25,19 +25,21 @@ namespace Asteroids
 		* PUBLIC FUNCTIONS
 		* ============================================================= */
 		void Init();
-		void HandleInput();
-		void Update(double deltaTime) const;
+		void Update(double deltaTime);
 		void Render() const;
 	private:
 		/* =============================================================
 		* PRIVATE FUNCTIONS
 		* ============================================================= */
+		void HandleInput();
 		void CreatePlayer();
 		void CreateAsteroids(int amount, Entities::Asteroid::AsteroidSize::Size size, Engine::Math::Vector2 position = Engine::Math::Vector2::Origin) const;
-		void CreateDebris(Entities::Asteroid::AsteroidSize::Size previousSize, Engine::Math::Vector2 position) const;
-		void CheckCollisions() const;
+		void CreateDebris(Entities::Asteroid* currentAsteroid) const;
+		void CleanDeadUpBullets();
+		void CheckCollisions();
 		void CheckCollisionWithPlayer(Entities::Asteroid* pAsteroid) const;
 		void CheckCollisionWithBullets(Entities::Asteroid* pAsteroid);
+		void DestroyBullet(Entities::Bullet* bulletToDestroy);
 
 		/* =============================================================
 		* MEMBERS
@@ -46,7 +48,7 @@ namespace Asteroids
 		int m_width;
 		int m_height;		
 		Entities::Ship* m_player;
-		std::vector<Entities::Bullet*> m_bullets;
+		std::list<Entities::Bullet*> m_bullets;
 	};
 }
 
