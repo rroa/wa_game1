@@ -98,8 +98,8 @@
       <AdditionalDependencies>glew32.lib;opengl32.lib;SDL2main.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "$(SolutionDir)\Externals\glew-1.13.0\bin\Release\x64\glew32.dll" "$(TargetDir)glew32.dll"
-copy /Y "$(SolutionDir)\Externals\SDL2-2.0.4\lib\x64\SDL2.dll" "$(TargetDir)SDL2.dll"
+      <Command>copy /Y "$(SolutionDir)\Externals\glew-1.13.0\bin\Release\Win32\glew32.dll" "$(TargetDir)glew32.dll"
+copy /Y "$(SolutionDir)\Externals\SDL2-2.0.4\lib\x86\SDL2.dll" "$(TargetDir)SDL2.dll"
 XCOPY "$(SolutionDir)\BoilerPlate\models" "$(TargetDir)\models" /i /s /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -144,8 +144,8 @@ XCOPY "$(SolutionDir)\BoilerPlate\models" "$(TargetDir)\models" /i /s /Y</Comman
       <AdditionalDependencies>glew32.lib;opengl32.lib;SDL2main.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "$(SolutionDir)\Externals\glew-1.13.0\bin\Release\x64\glew32.dll" "$(TargetDir)glew32.dll"
-copy /Y "$(SolutionDir)\Externals\SDL2-2.0.4\lib\x64\SDL2.dll" "$(TargetDir)SDL2.dll"
+      <Command>copy /Y "$(SolutionDir)\Externals\glew-1.13.0\bin\Release\Win32\glew32.dll" "$(TargetDir)glew32.dll"
+copy /Y "$(SolutionDir)\Externals\SDL2-2.0.4\lib\x86\SDL2.dll" "$(TargetDir)SDL2.dll"
 XCOPY "$(SolutionDir)\BoilerPlate\models" "$(TargetDir)\models" /i /s /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
