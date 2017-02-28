@@ -21,7 +21,7 @@ namespace Engine
 			* ============================================================= */
 			explicit Component(const std::string& name);
 			~Component();
-			void Update(float deltaTime) override;
+			void Update(double deltaTime) override;
 
 			/* =============================================================
 			* GETTER FUNCTIONS

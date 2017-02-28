@@ -88,7 +88,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Externals\SDL2-2.0.4\include;..\Externals\glew-1.13.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -99,7 +99,8 @@
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(SolutionDir)\Externals\glew-1.13.0\bin\Release\Win32\glew32.dll" "$(TargetDir)glew32.dll"
-copy /Y "$(SolutionDir)\Externals\SDL2-2.0.4\lib\x86\SDL2.dll" "$(TargetDir)SDL2.dll"</Command>
+copy /Y "$(SolutionDir)\Externals\SDL2-2.0.4\lib\x86\SDL2.dll" "$(TargetDir)SDL2.dll"
+XCOPY "$(SolutionDir)\BoilerPlate\models" "$(TargetDir)\models" /i /s /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -108,7 +109,7 @@ copy /Y "$(SolutionDir)\Externals\SDL2-2.0.4\lib\x86\SDL2.dll" "$(TargetDir)SDL2
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Externals\SDL2-2.0.4\include;..\Externals\glew-1.13.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -131,7 +132,7 @@ XCOPY "$(SolutionDir)\BoilerPlate\models" "$(TargetDir)\models" /i /s /Y</Comman
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Externals\SDL2-2.0.4\include;..\Externals\glew-1.13.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -144,7 +145,8 @@ XCOPY "$(SolutionDir)\BoilerPlate\models" "$(TargetDir)\models" /i /s /Y</Comman
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(SolutionDir)\Externals\glew-1.13.0\bin\Release\Win32\glew32.dll" "$(TargetDir)glew32.dll"
-copy /Y "$(SolutionDir)\Externals\SDL2-2.0.4\lib\x86\SDL2.dll" "$(TargetDir)SDL2.dll"</Command>
+copy /Y "$(SolutionDir)\Externals\SDL2-2.0.4\lib\x86\SDL2.dll" "$(TargetDir)SDL2.dll"
+XCOPY "$(SolutionDir)\BoilerPlate\models" "$(TargetDir)\models" /i /s /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -155,7 +157,7 @@ copy /Y "$(SolutionDir)\Externals\SDL2-2.0.4\lib\x86\SDL2.dll" "$(TargetDir)SDL2
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Externals\SDL2-2.0.4\include;..\Externals\glew-1.13.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -175,6 +177,7 @@ XCOPY "$(SolutionDir)\BoilerPlate\models" "$(TargetDir)\models" /i /s /Y</Comman
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Asteroid.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -199,6 +202,7 @@ XCOPY "$(SolutionDir)\BoilerPlate\models" "$(TargetDir)\models" /i /s /Y</Comman
   <ItemGroup>
     <ClInclude Include="App.hpp" />
     <ClInclude Include="Asteroid.hpp" />
+    <ClInclude Include="Bullet.hpp" />
     <ClInclude Include="Component.hpp" />
     <ClInclude Include="Configuration.hpp" />
     <ClInclude Include="Entity.hpp" />

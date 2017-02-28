@@ -56,11 +56,11 @@ namespace Asteroids
 			ApplyRandomImpulse();
 		}
 
-		void Asteroid::Update(float deltaTime)
+		void Asteroid::Update(double deltaTime)
 		{
 			// Rotate the asteroid.
 			//
-			float angle = m_transforms->GetAngleInDegrees() + ROTATION_SPEED * deltaTime;
+			float angle = m_transforms->GetAngleInDegrees() + ROTATION_SPEED * static_cast<float>(deltaTime);
 			m_transforms->RotateInDegrees(angle);
 
 			Entity::Update(deltaTime);

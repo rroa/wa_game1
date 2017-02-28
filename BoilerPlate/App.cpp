@@ -17,6 +17,7 @@ namespace Application
 		: m_width(width)
 		, m_height(height)
 		, m_nUpdates(0)
+		, m_deltaTime(0.0)
 		, m_title(title)
 		, m_mainWindow(nullptr)
 		, m_context(nullptr)
@@ -25,6 +26,7 @@ namespace Application
 	{
 		m_state = AppState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
+		m_deltaTime = static_cast<double>(DESIRED_FRAME_TIME);
 
 		// Creating the game object.
 		//
@@ -127,7 +129,7 @@ namespace Application
 
 		// Update the game!
 		//
-		m_game->Update(DESIRED_FRAME_TIME);
+		m_game->Update(m_deltaTime);
 
 		double endTime = m_timer->GetElapsedTimeInSeconds();
 		double nextTimeFrame = startTime + DESIRED_FRAME_TIME;
@@ -138,10 +140,10 @@ namespace Application
 			endTime = m_timer->GetElapsedTimeInSeconds();
 		}
 
-		//double elapsedTime = endTime - startTime;        
-
+		m_deltaTime = endTime - startTime;
+		
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
-
+		
 		m_nUpdates++;
 	}
 

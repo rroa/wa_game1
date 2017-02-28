@@ -20,6 +20,20 @@ namespace Asteroids
 		{
 		public:
 			/* =============================================================
+			* ENUMERATORS
+			* ============================================================= */
+			struct EntityState
+			{
+				enum State
+				{
+					NORMAL = 0,
+					COLLIDED = 1,
+					DELETED = 2,
+					RESPAWNING = 3
+				};
+			};
+
+			/* =============================================================
 			* CTOR
 			* ============================================================= */
 			Entity();
@@ -27,22 +41,37 @@ namespace Asteroids
 			/* =============================================================
 			* PUBLIC FUNCTIONS
 			* ============================================================= */
-			void Update(float delta) override;
+			void Update(double delta) override;
 			void Render(unsigned int mode, std::vector<Engine::Math::Vector2> points, Engine::Math::Vector3 color = Engine::Math::Vector3(1.0));
 			
 			// TODO: RR: Move out to rigid body component
 			//
-			bool IsColliding(Entity* rhs) const;
+			bool IntersectsWith(Entity* rhs);
 			bool CanCollide() const { return m_canCollide; }
 			void SetCollision(bool canCollide) { m_canCollide = canCollide; }
+
+			/* =============================================================
+			* GETTER FUNCTIONS
+			* ============================================================= */
+			Engine::Math::Vector2 GetPosition() const { return m_transforms->GetPosition(); }
+			bool ShouldBeDeleted() const { return m_state == EntityState::State::DELETED; }
+			bool IsColliding() const { return m_state == EntityState::State::COLLIDED; }
+			bool IsRespawning() const { return m_state == EntityState::State::RESPAWNING; }
 		protected:
+			/* =============================================================
+			* PROTECTED MEMBERS
+			* ============================================================= */
 			Engine::Components::TransformationComponent* m_transforms;
 			Engine::Components::RigidBodyComponent* m_physics;
+			EntityState::State m_state;
 			float m_radius; // TODO: RR: Move this to rigid body component
 			bool m_canCollide; // TODO: RR: Move this to rigid body component
 		private:
-			float m_halfWidth;
-			float m_halfHeight;			
+			/* =============================================================
+			* PRIVATE MEMBERS
+			* ============================================================= */
+			float m_sceneHalfWidth;
+			float m_sceneHalfHeight;
 		};
 	}
 }

@@ -59,7 +59,7 @@ namespace Engine
 			delete child;
 		}
 
-		void GameObject::Update(float deltaTime)
+		void GameObject::Update(double deltaTime)
 		{
 			// Update components
 			//

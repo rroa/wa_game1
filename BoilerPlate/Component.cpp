@@ -13,7 +13,7 @@ namespace Engine
 			m_owner = nullptr;
 		}
 
-		void Component::Update(float deltaTime)
+		void Component::Update(double deltaTime)
 		{
 			IUpdate::Update(deltaTime);
 		}

@@ -57,6 +57,9 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Engine\Source files\Input</Filter>
     </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Game\Source files\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.hpp" />
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="InputManager.hpp">
       <Filter>Engine\Header files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.hpp">
+      <Filter>Game\Header files\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

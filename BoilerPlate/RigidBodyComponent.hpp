@@ -22,7 +22,7 @@ namespace Engine
 			/* =============================================================
 			* PUBLIC FUNCTIONS
 			* ============================================================= */
-			void Update(float deltaTime) override;
+			void Update(double deltaTime) override;
 			void ApplyForce(const Math::Vector2 force, float angleInRadians = 1.0f);
 
 			/* =============================================================

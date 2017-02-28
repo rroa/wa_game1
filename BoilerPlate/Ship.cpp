@@ -4,6 +4,7 @@
 //
 #include <cmath>
 #include "MathUtilities.hpp"
+#include "Constants.hpp"
 
 namespace Asteroids
 {
@@ -12,6 +13,7 @@ namespace Asteroids
 		const float ANGLE_OFFSET = 90.0f;
 		const float THRUST = 3.0f;
 		const float MAX_SPEED = 350.0f;
+		const float BULLET_SPEED = 250.f;
 		const float ROTATION_SPEED = 5.0f;
 		const int RESTART_BLINK_FRAME_TIME = 30;
 		const int RESPAWN_TIME = 120;
@@ -97,21 +99,21 @@ namespace Asteroids
 			CalculateMass();
 		}
 
-		void Ship::Update(float deltaTime)
+		void Ship::Update(double deltaTime)
 		{
 			// Clamp speed
 			//
-			float speed = fabs(m_physics->GetSpeed());
-			if (speed > MAX_SPEED)
+			m_currentSpeed = fabs(m_physics->GetSpeed());
+			if (m_currentSpeed > MAX_SPEED)
 			{
 				m_physics->SetVelocity(
 					Engine::Math::Vector2(
-					(m_physics->GetVelocity().x / speed) * MAX_SPEED,
-						(m_physics->GetVelocity().y / speed) * MAX_SPEED
+						(m_physics->GetVelocity().x / m_currentSpeed) * MAX_SPEED,
+						(m_physics->GetVelocity().y / m_currentSpeed) * MAX_SPEED
 					)
 				);
 
-				m_currentSpeed = fabs(m_physics->GetVelocity().Length());
+				m_currentSpeed = MAX_SPEED;
 			}
 
 			Entity::Update(deltaTime);
@@ -124,6 +126,7 @@ namespace Asteroids
 				if (m_nRespawnTime >= RESPAWN_TIME)
 				{
 					SetCollision(true);
+					m_state = EntityState::NORMAL;
 					m_nRespawnTime = 0;
 					m_pulse = false;
 					m_currentColor = Engine::Math::Vector3(1.0f);
@@ -161,11 +164,24 @@ namespace Asteroids
 			m_transforms->Teleport(0.0f, 0.0f);
 			m_transforms->ResetOrientation();
 			m_physics->SetVelocity(Engine::Math::Vector2(0.f, 0.f));
+			m_state = EntityState::RESPAWNING;
+		}
+
+		Bullet * Ship::Shoot() const
+		{
+			float shootingAngle = m_transforms->GetAngleInDegrees() + ANGLE_OFFSET;
+			float speed = m_currentSpeed + BULLET_SPEED;
+
+			return new Bullet(
+				m_transforms->GetPosition(),
+				Engine::Math::Vector2(speed),
+				shootingAngle
+			);
 		}
 
 		void Ship::CalculateMass()
 		{
-			// Set the mass, proportional to the ship size (asumming points defines size)
+			// TODO: RR: Set the mass, proportional to the ship size (asumming points defines size)
 			//
 			m_physics->SetMass(m_ships[m_currentIndex].size() / 10.0f);
 		}
