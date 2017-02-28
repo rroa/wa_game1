@@ -4,6 +4,7 @@
 //
 #include <cmath>
 #include "MathUtilities.hpp"
+#include "Constants.hpp"
 
 namespace Asteroids
 {
@@ -98,7 +99,7 @@ namespace Asteroids
 			CalculateMass();
 		}
 
-		void Ship::Update(float deltaTime)
+		void Ship::Update(double deltaTime)
 		{
 			// Clamp speed
 			//
@@ -107,7 +108,7 @@ namespace Asteroids
 			{
 				m_physics->SetVelocity(
 					Engine::Math::Vector2(
-					(m_physics->GetVelocity().x / m_currentSpeed) * MAX_SPEED,
+						(m_physics->GetVelocity().x / m_currentSpeed) * MAX_SPEED,
 						(m_physics->GetVelocity().y / m_currentSpeed) * MAX_SPEED
 					)
 				);
@@ -164,26 +165,21 @@ namespace Asteroids
 			m_physics->SetVelocity(Engine::Math::Vector2(0.f, 0.f));
 		}
 
-		Bullet * Ship::Shoot()
+		Bullet * Ship::Shoot() const
 		{
 			float shootingAngle = m_transforms->GetAngleInDegrees() + ANGLE_OFFSET;
-
-			float x = m_transforms->GetPosition().x + m_ships[m_currentIndex][1].x;
-			float y = m_transforms->GetPosition().y + m_ships[m_currentIndex][1].y;
-
-			float vx = m_currentSpeed + BULLET_SPEED;
-			float vy = m_currentSpeed + BULLET_SPEED;
+			float speed = m_currentSpeed + BULLET_SPEED;
 
 			return new Bullet(
-				Engine::Math::Vector2(x, y), 
-				Engine::Math::Vector2(vx, vy), 
+				m_transforms->GetPosition(),
+				Engine::Math::Vector2(speed),
 				shootingAngle
 			);
 		}
 
 		void Ship::CalculateMass()
 		{
-			// Set the mass, proportional to the ship size (asumming points defines size)
+			// TODO: RR: Set the mass, proportional to the ship size (asumming points defines size)
 			//
 			m_physics->SetMass(m_ships[m_currentIndex].size() / 10.0f);
 		}

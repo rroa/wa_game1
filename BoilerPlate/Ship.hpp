@@ -32,10 +32,10 @@ namespace Asteroids
 			void MoveRight() const;
 			void MoveLeft() const;
 			void ChangeShip();
-			void Update(float deltaTime) override;
+			void Update(double deltaTime) override;
 			void Render() override;
 			void Respawn();
-			Bullet* Shoot();
+			Bullet* Shoot() const;
 		private:
 			void CalculateMass();
 			/* =============================================================
@@ -43,7 +43,7 @@ namespace Asteroids
 			* ============================================================= */
 			std::vector<points_set> m_ships;
 			float m_currentSpeed;
-			int	m_currentIndex;
+			unsigned int m_currentIndex;
 			int m_nRespawnTime;
 			bool m_pulse = false;
 			int  m_currentPulseCount;

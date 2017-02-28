@@ -22,7 +22,7 @@ namespace Asteroids
 		* PUBLIC FUNCTIONS
 		* ============================================================= */
 		void Init();
-		void Update(float delta) const;
+		void Update(double deltaTime) const;
 		void Render() const;
 	private:
 		/* =============================================================

@@ -32,7 +32,7 @@ namespace Engine
 			void RemoveComponent(Component*);
 			void AddChild(GameObject*);
 			void RemoveChild(GameObject*);
-			void Update(float deltaTime) override;
+			void Update(double deltaTime) override;
 			void Render() override;
 
 			/* =============================================================

@@ -2,6 +2,7 @@
 
 //
 #include <SDL2/SDL_opengl.h>
+#include "MathUtilities.hpp"
 
 namespace  Asteroids
 {
@@ -18,7 +19,6 @@ namespace  Asteroids
 			// Apply initial transforms
 			//
 			m_transforms->Teleport(position);
-			//m_transforms->RotateInDegrees(angle);
 
 			// Attaching transformation component
 			//
@@ -37,7 +37,10 @@ namespace  Asteroids
 
 			// Apply initial velocity
 			//
-			m_physics->ApplyForce(velocity);
+			m_physics->ApplyForce(
+				velocity, 
+				Engine::Math::DegreesToRadians(angle)
+			);
 		}
 
 		void Bullet::Render()

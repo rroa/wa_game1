@@ -33,7 +33,7 @@ namespace Asteroids
 			* PUBLIC FUNCTIONS
 			* ============================================================= */
 			explicit Asteroid(AsteroidSize::Size size, Engine::Math::Vector2 position = Engine::Math::Vector2::Origin);
-			void Update(float deltaTime) override;
+			void Update(double deltaTime) override;
 			void Render() override;
 			void ApplyRandomTranslation() const;
 

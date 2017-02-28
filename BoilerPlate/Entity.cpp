@@ -31,11 +31,12 @@ namespace Asteroids
 			: m_transforms(nullptr)
 			, m_physics(nullptr)
 			, m_radius(0)
-		    , m_halfWidth(0)
+			, m_canCollide(false)
+			, m_halfWidth(0)
 			, m_halfHeight(0)
 		{}
 
-		void Entity::Update(float deltaTime)
+		void Entity::Update(double deltaTime)
 		{
 			if (!GetParent()) return;
 
@@ -50,8 +51,8 @@ namespace Asteroids
 			// Time stepping the position
 			//
 			Engine::Math::Vector2 newPos(
-				m_transforms->GetPosition().x + (m_physics->GetVelocity().x * deltaTime),
-				m_transforms->GetPosition().y + (m_physics->GetVelocity().y * deltaTime)
+				m_transforms->GetPosition().x + (m_physics->GetVelocity().x * static_cast<float>(deltaTime)),
+				m_transforms->GetPosition().y + (m_physics->GetVelocity().y * static_cast<float>(deltaTime))
 			);
 
 			// Getting axis limits

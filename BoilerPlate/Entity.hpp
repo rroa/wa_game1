@@ -20,6 +20,19 @@ namespace Asteroids
 		{
 		public:
 			/* =============================================================
+			* ENUMERATORS
+			* ============================================================= */
+			struct EntityState
+			{
+				enum State
+				{
+					NORMAL = 0,
+					COLLIDED = 1,
+					DELETED = 2,
+				};
+			};
+
+			/* =============================================================
 			* CTOR
 			* ============================================================= */
 			Entity();
@@ -27,7 +40,7 @@ namespace Asteroids
 			/* =============================================================
 			* PUBLIC FUNCTIONS
 			* ============================================================= */
-			void Update(float delta) override;
+			void Update(double delta) override;
 			void Render(unsigned int mode, std::vector<Engine::Math::Vector2> points, Engine::Math::Vector3 color = Engine::Math::Vector3(1.0));
 			
 			// TODO: RR: Move out to rigid body component

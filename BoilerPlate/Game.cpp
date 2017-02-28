@@ -47,7 +47,7 @@ namespace Asteroids
 		//CreateAsteroids(10, Entities::Asteroid::AsteroidSize::BIG);
 	}
 
-	void Game::Update(float delta) const
+	void Game::Update(double deltaTime) const
 	{
 		// Handle Input
 		//
@@ -55,7 +55,7 @@ namespace Asteroids
 
 		// Update the scene
 		//
-		m_scene->Update(delta);
+		m_scene->Update(deltaTime);
 
 		// Look for collisions
 		//

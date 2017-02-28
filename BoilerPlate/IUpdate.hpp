@@ -14,7 +14,7 @@ namespace Engine
 			/* =============================================================
 			* PUBLIC FUNCTIONS
 			* ============================================================= */
-			void virtual Update(float deltaTime) { m_nUpdates++; };
+			void virtual Update(double deltaTime) { m_nUpdates++; };
 		protected:
 			/* =============================================================
 			* MEMBERS

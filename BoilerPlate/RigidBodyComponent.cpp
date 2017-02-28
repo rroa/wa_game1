@@ -24,7 +24,7 @@ namespace Engine
 		RigidBodyComponent::~RigidBodyComponent()
 		{}
 
-		void RigidBodyComponent::Update(float deltaTime)
+		void RigidBodyComponent::Update(double deltaTime)
 		{
 			// Apply acceleration
 			//
